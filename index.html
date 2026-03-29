@@ -261,7 +261,6 @@ h1{font-family:&amp;#x27;Baloo 2&amp;#x27;,cursive;font-size:clamp(2em,6vw,3.5em
         &amp;lt;option value=&amp;quot;fill&amp;quot;&amp;gt;❓ Tìm số còn thiếu&amp;lt;/option&amp;gt;
         &amp;lt;option value=&amp;quot;add100&amp;quot;&amp;gt;📊 Cộng phạm vi 100&amp;lt;/option&amp;gt;
         &amp;lt;option value=&amp;quot;sub100&amp;quot;&amp;gt;📊 Trừ phạm vi 100&amp;lt;/option&amp;gt;
-        &amp;lt;option value=&amp;quot;time&amp;quot;&amp;gt;🕐 Xem giờ đúng&amp;lt;/option&amp;gt;
         &amp;lt;option value=&amp;quot;review&amp;quot;&amp;gt;📝 Ôn tập cuối năm&amp;lt;/option&amp;gt;
       &amp;lt;/select&amp;gt;
       &amp;lt;label&amp;gt;⏱️ Thời gian mỗi câu:&amp;lt;/label&amp;gt;
@@ -313,9 +312,8 @@ function genCount(){const emojis=[&amp;#x27;\ud83c\udf4e&amp;#x27;,&amp;#x27;\u2
 function genFill(){const type=rnd(0,1);if(type===0){let a=rnd(1,10),c=rnd(a+1,Math.min(a+10,20));return{expr:a+&amp;#x27; + \u25a2 = &amp;#x27;+c,answer:c-a,label:&amp;#x27;Tìm số còn thiếu:&amp;#x27;}}else{let a=rnd(2,15),b=rnd(1,a);return{expr:&amp;#x27;\u25a2 \u2212 &amp;#x27;+b+&amp;#x27; = &amp;#x27;+(a-b),answer:a,label:&amp;#x27;Tìm số còn thiếu:&amp;#x27;}}}
 function genAdd100(){let a=rnd(10,50),b=rnd(10,99-a);while((a%10+b%10)&amp;gt;=10){a=rnd(10,50);b=rnd(10,99-a)}return{expr:a+&amp;#x27; + &amp;#x27;+b+&amp;#x27; = ?&amp;#x27;,answer:a+b,label:&amp;#x27;Phạm vi 100:&amp;#x27;}}
 function genSub100(){let a=rnd(20,99),b=rnd(10,a-10);while((a%10)&amp;lt;(b%10)){a=rnd(20,99);b=rnd(10,a-10)}return{expr:a+&amp;#x27; \u2212 &amp;#x27;+b+&amp;#x27; = ?&amp;#x27;,answer:a-b,label:&amp;#x27;Phạm vi 100:&amp;#x27;}}
-function genTime(){const h=rnd(1,12);return{expr:h+&amp;#x27; giờ đúng = mấy giờ?&amp;#x27;,answer:h,label:&amp;#x27;Xem đồng hồ:&amp;#x27;}}
 function genReview(){return[genAdd,genSub,genAdd100,genSub100,genCompare,genCount,genFill][rnd(0,6)]()}
-function generateQuestion(){const t=config.mathType;if(t===&amp;#x27;add&amp;#x27;)return genAdd();if(t===&amp;#x27;sub&amp;#x27;)return genSub();if(t===&amp;#x27;add10&amp;#x27;)return genAdd10();if(t===&amp;#x27;sub10&amp;#x27;)return genSub10();if(t===&amp;#x27;compare&amp;#x27;)return genCompare();if(t===&amp;#x27;count&amp;#x27;)return genCount();if(t===&amp;#x27;fill&amp;#x27;)return genFill();if(t===&amp;#x27;add100&amp;#x27;)return genAdd100();if(t===&amp;#x27;sub100&amp;#x27;)return genSub100();if(t===&amp;#x27;time&amp;#x27;)return genTime();if(t===&amp;#x27;review&amp;#x27;)return genReview();return[genAdd,genSub,genAdd10,genSub10,genCompare,genCount,genFill,genAdd100,genSub100][rnd(0,8)]()}
+function generateQuestion(){const t=config.mathType;if(t===&amp;#x27;add&amp;#x27;)return genAdd();if(t===&amp;#x27;sub&amp;#x27;)return genSub();if(t===&amp;#x27;add10&amp;#x27;)return genAdd10();if(t===&amp;#x27;sub10&amp;#x27;)return genSub10();if(t===&amp;#x27;compare&amp;#x27;)return genCompare();if(t===&amp;#x27;count&amp;#x27;)return genCount();if(t===&amp;#x27;fill&amp;#x27;)return genFill();if(t===&amp;#x27;add100&amp;#x27;)return genAdd100();if(t===&amp;#x27;sub100&amp;#x27;)return genSub100();if(t===&amp;#x27;review&amp;#x27;)return genReview();return[genAdd,genSub,genAdd10,genSub10,genCompare,genCount,genFill,genAdd100,genSub100][rnd(0,8)]()}
 const CIRCUMFERENCE=2*Math.PI*60;
 function startTimer(){clearInterval(state.timerInterval);state.timeLeft=config.timePerQ;const circle=document.getElementById(&amp;#x27;timerCircle&amp;#x27;);circle.style.strokeDasharray=CIRCUMFERENCE;circle.style.strokeDashoffset=0;circle.classList.remove(&amp;#x27;warning&amp;#x27;,&amp;#x27;danger&amp;#x27;);document.getElementById(&amp;#x27;timerText&amp;#x27;).textContent=state.timeLeft;state.timerInterval=setInterval(()=&amp;gt;{state.timeLeft--;document.getElementById(&amp;#x27;timerText&amp;#x27;).textContent=state.timeLeft;const pct=1-state.timeLeft/config.timePerQ;circle.style.strokeDashoffset=CIRCUMFERENCE*pct;if(state.timeLeft&amp;lt;=5){circle.classList.add(&amp;#x27;danger&amp;#x27;);sndUrgent()}else if(state.timeLeft&amp;lt;=config.timePerQ*.4){circle.classList.add(&amp;#x27;warning&amp;#x27;);sndTick()}if(state.timeLeft&amp;lt;=0){clearInterval(state.timerInterval);timeUp()}},1000)}
 function timeUp(){state.answered=true;sndNo();const fb=document.getElementById(&amp;#x27;feedback&amp;#x27;);fb.className=&amp;#x27;feedback wrong&amp;#x27;;fb.innerHTML=&amp;#x27;\u23f0 Hết giờ! Đáp án: &amp;lt;strong&amp;gt;&amp;#x27;+state.currentQ.answer+&amp;#x27;&amp;lt;/strong&amp;gt;&amp;#x27;;document.getElementById(&amp;#x27;answerInput&amp;#x27;).classList.add(&amp;#x27;wrong&amp;#x27;);document.getElementById(&amp;#x27;questionCard&amp;#x27;).classList.add(&amp;#x27;wrong-flash&amp;#x27;);setTimeout(()=&amp;gt;document.getElementById(&amp;#x27;questionCard&amp;#x27;).classList.remove(&amp;#x27;wrong-flash&amp;#x27;),600)}
@@ -588,6 +586,61 @@ const MATH_Q=[
 ];
 const VIET_Q=[
 {q:&amp;quot;🐱 là con gì?&amp;quot;,o:[&amp;quot;con chó&amp;quot;,&amp;quot;con mèo&amp;quot;,&amp;quot;con gà&amp;quot;,&amp;quot;con vịt&amp;quot;],a:1},{q:&amp;quot;Chữ cái đầu tiên bảng chữ cái?&amp;quot;,o:[&amp;quot;b&amp;quot;,&amp;quot;a&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;],a:1},{q:&amp;quot;Từ nào viết đúng chính tả?&amp;quot;,o:[&amp;quot;con nèo&amp;quot;,&amp;quot;con mèo&amp;quot;,&amp;quot;con mào&amp;quot;,&amp;quot;con nào&amp;quot;],a:1},{q:&amp;quot;🌸 đọc là gì?&amp;quot;,o:[&amp;quot;bông hoa&amp;quot;,&amp;quot;ngôi sao&amp;quot;,&amp;quot;mặt trời&amp;quot;,&amp;quot;con bướm&amp;quot;],a:0},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;to&amp;#x27;?&amp;quot;,o:[&amp;quot;lớn&amp;quot;,&amp;quot;nhỏ&amp;quot;,&amp;quot;cao&amp;quot;,&amp;quot;dài&amp;quot;],a:1},{q:&amp;quot;Từ nào chỉ đồ vật?&amp;quot;,o:[&amp;quot;chạy&amp;quot;,&amp;quot;đẹp&amp;quot;,&amp;quot;cái bàn&amp;quot;,&amp;quot;xanh&amp;quot;],a:2},{q:&amp;quot;Từ nào chỉ con vật?&amp;quot;,o:[&amp;quot;ngôi nhà&amp;quot;,&amp;quot;cái cây&amp;quot;,&amp;quot;con trâu&amp;quot;,&amp;quot;bầu trời&amp;quot;],a:2},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;cao&amp;#x27;?&amp;quot;,o:[&amp;quot;to&amp;quot;,&amp;quot;thấp&amp;quot;,&amp;quot;dài&amp;quot;,&amp;quot;lớn&amp;quot;],a:1},{q:&amp;quot;Tiếng nào có vần &amp;#x27;an&amp;#x27;?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;bón&amp;quot;,&amp;quot;bún&amp;quot;,&amp;quot;bên&amp;quot;],a:0},{q:&amp;quot;Chữ cái nào sau chữ &amp;#x27;b&amp;#x27;?&amp;quot;,o:[&amp;quot;a&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,&amp;quot;đ&amp;quot;],a:1},{q:&amp;quot;Từ nào chỉ màu sắc?&amp;quot;,o:[&amp;quot;chạy&amp;quot;,&amp;quot;to&amp;quot;,&amp;quot;đỏ&amp;quot;,&amp;quot;nhà&amp;quot;],a:2},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;nóng&amp;#x27;?&amp;quot;,o:[&amp;quot;ấm&amp;quot;,&amp;quot;mát&amp;quot;,&amp;quot;lạnh&amp;quot;,&amp;quot;sáng&amp;quot;],a:2},{q:&amp;quot;Câu nào đúng?&amp;quot;,o:[&amp;quot;Em yêu mẹ.&amp;quot;,&amp;quot;em yêu mẹ&amp;quot;,&amp;quot;Em yêu mẹ&amp;quot;,&amp;quot;em Yêu mẹ.&amp;quot;],a:0},{q:&amp;quot;Từ nào chỉ hành động?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;đẹp&amp;quot;,&amp;quot;nhảy&amp;quot;,&amp;quot;xanh&amp;quot;],a:2},{q:&amp;quot;Từ nào có vần &amp;#x27;ong&amp;#x27;?&amp;quot;,o:[&amp;quot;bong bóng&amp;quot;,&amp;quot;bông hoa&amp;quot;,&amp;quot;buồn&amp;quot;,&amp;quot;bón&amp;quot;],a:0},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;vui&amp;#x27;?&amp;quot;,o:[&amp;quot;cười&amp;quot;,&amp;quot;buồn&amp;quot;,&amp;quot;khóc&amp;quot;,&amp;quot;hát&amp;quot;],a:1},{q:&amp;quot;🏠 là gì?&amp;quot;,o:[&amp;quot;ngôi trường&amp;quot;,&amp;quot;ngôi nhà&amp;quot;,&amp;quot;cái cây&amp;quot;,&amp;quot;quả núi&amp;quot;],a:1},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;sáng&amp;#x27;?&amp;quot;,o:[&amp;quot;đêm&amp;quot;,&amp;quot;tối&amp;quot;,&amp;quot;mây&amp;quot;,&amp;quot;mưa&amp;quot;],a:1},{q:&amp;quot;Tên riêng nào viết đúng?&amp;quot;,o:[&amp;quot;hà nội&amp;quot;,&amp;quot;Hà Nội&amp;quot;,&amp;quot;hà Nội&amp;quot;,&amp;quot;Hà nội&amp;quot;],a:1},{q:&amp;quot;Từ nào chỉ người?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;mẹ&amp;quot;,&amp;quot;mèo&amp;quot;,&amp;quot;hoa&amp;quot;],a:1},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;nhanh&amp;#x27;?&amp;quot;,o:[&amp;quot;chạy&amp;quot;,&amp;quot;chậm&amp;quot;,&amp;quot;bay&amp;quot;,&amp;quot;xa&amp;quot;],a:1},{q:&amp;quot;Bài thơ thường có gì?&amp;quot;,o:[&amp;quot;Số&amp;quot;,&amp;quot;Vần&amp;quot;,&amp;quot;Phép tính&amp;quot;,&amp;quot;Bảng&amp;quot;],a:1},{q:&amp;quot;Điền vần: c_m (cơm)&amp;quot;,o:[&amp;quot;ơ&amp;quot;,&amp;quot;o&amp;quot;,&amp;quot;ô&amp;quot;,&amp;quot;a&amp;quot;],a:0},{q:&amp;quot;Từ trái nghĩa với &amp;#x27;dài&amp;#x27;?&amp;quot;,o:[&amp;quot;to&amp;quot;,&amp;quot;cao&amp;quot;,&amp;quot;ngắn&amp;quot;,&amp;quot;rộng&amp;quot;],a:2},{q:&amp;quot;Từ nào chỉ hoa quả?&amp;quot;,o:[&amp;quot;cái bàn&amp;quot;,&amp;quot;quả cam&amp;quot;,&amp;quot;con mèo&amp;quot;,&amp;quot;ngôi nhà&amp;quot;],a:1}
+];
+
+const EM_TOAN=[
+{q:&amp;quot;3 + 2 + 4 = ?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;7&amp;quot;],a:1},
+{q:&amp;quot;15 - 5 - 3 = ?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;5&amp;quot;],a:1},
+{q:&amp;quot;6 quả cam thêm 3 quả. Tổng?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;7&amp;quot;],a:1},
+{q:&amp;quot;Hình vuông có mấy cạnh?&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;],a:1},
+{q:&amp;quot;2 + 2 + 2 + 2 = ?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;4&amp;quot;],a:1},
+{q:&amp;quot;10 kẹo ăn 3 rồi ăn 2. Còn?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;3&amp;quot;],a:1},
+{q:&amp;quot;Tăng dần: 9, 3, 7?&amp;quot;,o:[&amp;quot;3, 7, 9&amp;quot;,&amp;quot;7, 3, 9&amp;quot;,&amp;quot;9, 7, 3&amp;quot;,&amp;quot;3, 9, 7&amp;quot;],a:0},
+{q:&amp;quot;20 - 10 + 5 = ?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;20&amp;quot;,&amp;quot;5&amp;quot;],a:1},
+{q:&amp;quot;24 + 15 = ?&amp;quot;,o:[&amp;quot;38&amp;quot;,&amp;quot;39&amp;quot;,&amp;quot;40&amp;quot;,&amp;quot;37&amp;quot;],a:1},
+{q:&amp;quot;56 - 23 = ?&amp;quot;,o:[&amp;quot;32&amp;quot;,&amp;quot;33&amp;quot;,&amp;quot;34&amp;quot;,&amp;quot;31&amp;quot;],a:1},
+{q:&amp;quot;Số chục của 16 là?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;1&amp;quot;,&amp;quot;16&amp;quot;,&amp;quot;0&amp;quot;],a:1},
+{q:&amp;quot;Số đơn vị của 18 là?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;18&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;0&amp;quot;],a:2},
+{q:&amp;quot;3 đỏ và 4 xanh. Tổng?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;5&amp;quot;],a:1},
+{q:&amp;quot;Số liền sau 19?&amp;quot;,o:[&amp;quot;18&amp;quot;,&amp;quot;20&amp;quot;,&amp;quot;21&amp;quot;,&amp;quot;17&amp;quot;],a:1},
+{q:&amp;quot;Ngày nào sau thứ Ba?&amp;quot;,o:[&amp;quot;Thứ Hai&amp;quot;,&amp;quot;Thứ Tư&amp;quot;,&amp;quot;Thứ Năm&amp;quot;,&amp;quot;CN&amp;quot;],a:1},
+{q:&amp;quot;Tam giác có mấy cạnh?&amp;quot;,o:[&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;],a:1},
+{q:&amp;quot;Số lớn nhất 1 chữ số?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;0&amp;quot;],a:1},
+{q:&amp;quot;1 chục bằng mấy đơn vị?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;100&amp;quot;],a:2},
+{q:&amp;quot;17 gồm ? chục ? đơn vị&amp;quot;,o:[&amp;quot;7C 1ĐV&amp;quot;,&amp;quot;1C 7ĐV&amp;quot;,&amp;quot;17ĐV&amp;quot;,&amp;quot;0C&amp;quot;],a:1},
+{q:&amp;quot;Mẹ có 8 cho con 3. Còn?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;3&amp;quot;],a:1},
+{q:&amp;quot;3 + ? = 10. Tìm ?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2},
+{q:&amp;quot;10 - ? = 4. Tìm ?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;4&amp;quot;],a:1},
+{q:&amp;quot;Kim ngắn chỉ 7. Mấy giờ?&amp;quot;,o:[&amp;quot;6 giờ&amp;quot;,&amp;quot;7 giờ&amp;quot;,&amp;quot;8 giờ&amp;quot;,&amp;quot;12 giờ&amp;quot;],a:1},
+{q:&amp;quot;5 + 5 + 5 = ?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;20&amp;quot;,&amp;quot;25&amp;quot;],a:1},
+{q:&amp;quot;Số bé nhất 2 chữ số?&amp;quot;,o:[&amp;quot;0&amp;quot;,&amp;quot;1&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;],a:2}
+];
+const EM_TV=[
+{q:&amp;quot;Vần nào trong từ BÀN?&amp;quot;,o:[&amp;quot;an&amp;quot;,&amp;quot;ăn&amp;quot;,&amp;quot;ân&amp;quot;,&amp;quot;en&amp;quot;],a:0},
+{q:&amp;quot;Từ nào đúng chính tả?&amp;quot;,o:[&amp;quot;ròng sông&amp;quot;,&amp;quot;dường ngủ&amp;quot;,&amp;quot;thể dục&amp;quot;,&amp;quot;cá dô&amp;quot;],a:2},
+{q:&amp;quot;Tiếng nào thanh nặng?&amp;quot;,o:[&amp;quot;bà&amp;quot;,&amp;quot;bạn&amp;quot;,&amp;quot;bá&amp;quot;,&amp;quot;ba&amp;quot;],a:1},
+{q:&amp;quot;Câu nào là câu hỏi?&amp;quot;,o:[&amp;quot;Em đi học.&amp;quot;,&amp;quot;Bạn tên gì?&amp;quot;,&amp;quot;Trời đẹp!&amp;quot;,&amp;quot;Em ngoan.&amp;quot;],a:1},
+{q:&amp;quot;Từ nào chỉ cây cối?&amp;quot;,o:[&amp;quot;con chó&amp;quot;,&amp;quot;cây bàng&amp;quot;,&amp;quot;ngôi nhà&amp;quot;,&amp;quot;bầu trời&amp;quot;],a:1},
+{q:&amp;quot;Cô giáo ___ hiền.&amp;quot;,o:[&amp;quot;rất&amp;quot;,&amp;quot;rấc&amp;quot;,&amp;quot;rấd&amp;quot;,&amp;quot;dất&amp;quot;],a:0},
+{q:&amp;quot;TRƯỜNG HỌC mấy tiếng?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1},
+{q:&amp;quot;Dấu ? cuối câu gì?&amp;quot;,o:[&amp;quot;Câu kể&amp;quot;,&amp;quot;Câu hỏi&amp;quot;,&amp;quot;Câu cảm&amp;quot;,&amp;quot;Câu khiến&amp;quot;],a:1},
+{q:&amp;quot;Con ___âu (trâu)?&amp;quot;,o:[&amp;quot;r&amp;quot;,&amp;quot;d&amp;quot;,&amp;quot;gi&amp;quot;,&amp;quot;tr&amp;quot;],a:3},
+{q:&amp;quot;Từ nào vần INH?&amp;quot;,o:[&amp;quot;xinh&amp;quot;,&amp;quot;xin&amp;quot;,&amp;quot;xanh&amp;quot;,&amp;quot;xoàn&amp;quot;],a:0},
+{q:&amp;quot;MẶT TRỜI mấy tiếng?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1},
+{q:&amp;quot;Trái nghĩa TRÊN?&amp;quot;,o:[&amp;quot;sau&amp;quot;,&amp;quot;trước&amp;quot;,&amp;quot;dưới&amp;quot;,&amp;quot;bên&amp;quot;],a:2},
+{q:&amp;quot;Tiếng nào chứa NG?&amp;quot;,o:[&amp;quot;ngo&amp;quot;,&amp;quot;ngô&amp;quot;,&amp;quot;nơ&amp;quot;,&amp;quot;no&amp;quot;],a:1},
+{q:&amp;quot;Hoa ___ đẹp quá!&amp;quot;,o:[&amp;quot;nở&amp;quot;,&amp;quot;lở&amp;quot;,&amp;quot;rở&amp;quot;,&amp;quot;nỡ&amp;quot;],a:0},
+{q:&amp;quot;Tiếng nào chứa Ê?&amp;quot;,o:[&amp;quot;bé&amp;quot;,&amp;quot;bế&amp;quot;,&amp;quot;bê&amp;quot;,&amp;quot;Cả 3&amp;quot;],a:3},
+{q:&amp;quot;Từ nào chỉ người?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;mẹ&amp;quot;,&amp;quot;mèo&amp;quot;,&amp;quot;hoa&amp;quot;],a:1},
+{q:&amp;quot;s___ch (sách)?&amp;quot;,o:[&amp;quot;a&amp;quot;,&amp;quot;á&amp;quot;,&amp;quot;ă&amp;quot;,&amp;quot;â&amp;quot;],a:1},
+{q:&amp;quot;Tiếng nào thanh huyền?&amp;quot;,o:[&amp;quot;bà&amp;quot;,&amp;quot;ba&amp;quot;,&amp;quot;bá&amp;quot;,&amp;quot;bả&amp;quot;],a:0},
+{q:&amp;quot;Từ nào vần ONG?&amp;quot;,o:[&amp;quot;bong bóng&amp;quot;,&amp;quot;bông hoa&amp;quot;,&amp;quot;buồn&amp;quot;,&amp;quot;bón&amp;quot;],a:0},
+{q:&amp;quot;Từ nào viết đúng?&amp;quot;,o:[&amp;quot;lung linh&amp;quot;,&amp;quot;nung ninh&amp;quot;,&amp;quot;lung ninh&amp;quot;,&amp;quot;nung linh&amp;quot;],a:0},
+{q:&amp;quot;Từ nào chỉ màu sắc?&amp;quot;,o:[&amp;quot;chạy&amp;quot;,&amp;quot;to&amp;quot;,&amp;quot;đỏ&amp;quot;,&amp;quot;nhà&amp;quot;],a:2},
+{q:&amp;quot;Điền: c___m (cơm)?&amp;quot;,o:[&amp;quot;ơ&amp;quot;,&amp;quot;o&amp;quot;,&amp;quot;ô&amp;quot;,&amp;quot;a&amp;quot;],a:0},
+{q:&amp;quot;Câu nào viết đúng?&amp;quot;,o:[&amp;quot;Em yêu mẹ.&amp;quot;,&amp;quot;em yêu mẹ&amp;quot;,&amp;quot;Em yêu mẹ&amp;quot;,&amp;quot;em Yêu mẹ.&amp;quot;],a:0},
+{q:&amp;quot;Tên riêng đúng?&amp;quot;,o:[&amp;quot;hà nội&amp;quot;,&amp;quot;Hà Nội&amp;quot;,&amp;quot;hà Nội&amp;quot;,&amp;quot;Hà nội&amp;quot;],a:1},
+{q:&amp;quot;Từ chỉ hành động?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;đẹp&amp;quot;,&amp;quot;nhảy&amp;quot;,&amp;quot;xanh&amp;quot;],a:2}
 ];
 
 const EM_TOAN=[
@@ -1094,6 +1147,406 @@ function resetAll(){document.getElementById(&amp;#x27;setupScreen&amp;#x27;).cla
 &amp;lt;/script&amp;gt;
 &amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;&lt;/textarea&gt;
+&lt;textarea id=&quot;game7&quot; style=&quot;display:none&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;vi&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1.0&amp;quot;&amp;gt;
+&amp;lt;title&amp;gt;Dau Truong Tri Thuc Lop 1&amp;lt;/title&amp;gt;
+&amp;lt;style&amp;gt;
+@import url(&amp;#x27;https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&amp;amp;family=Nunito:wght@400;600;700;800&amp;amp;display=swap&amp;#x27;);
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:&amp;#x27;Nunito&amp;#x27;,sans-serif;background:linear-gradient(135deg,#fef3c7,#fde68a,#fef9c3);min-height:100vh;color:#1e293b}
+.container{max-width:900px;margin:0 auto;padding:16px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+h1{font-family:&amp;#x27;Baloo 2&amp;#x27;,cursive;font-size:clamp(1.8em,5vw,3em);text-align:center;color:#b45309;margin-bottom:2px}
+.subtitle{text-align:center;font-size:1em;color:#78350f;margin-bottom:14px;font-weight:700}
+.setup-card{background:white;border-radius:24px;padding:28px;width:100%;max-width:550px;box-shadow:0 8px 32px rgba(0,0,0,.08);border:2px solid #f59e0b}
+.setup-card label{display:block;font-weight:700;font-size:1em;margin:12px 0 5px;color:#b45309}
+.setup-card select{width:100%;padding:12px 16px;border-radius:12px;border:2px solid #e2e8f0;font-size:1em;font-family:&amp;#x27;Nunito&amp;#x27;,sans-serif;font-weight:600;background:#fafafa;outline:none;transition:.3s;color:#334155}
+.setup-card select:focus{border-color:#f59e0b}
+.level-info{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0;font-size:.8em}
+.level-tag{padding:5px 10px;border-radius:8px;font-weight:700;text-align:center}
+.l1{background:#dcfce7;color:#166534}.l2{background:#dbeafe;color:#1e40af}
+.l3{background:#fef9c3;color:#854d0e}.l4{background:#fee2e2;color:#991b1b}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:14px 30px;border:none;border-radius:14px;font-family:&amp;#x27;Baloo 2&amp;#x27;,cursive;font-size:1.15em;cursor:pointer;transition:all .3s;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}
+.btn-go{background:linear-gradient(135deg,#f59e0b,#d97706);color:white;width:100%;margin-top:12px}
+.btn-next{background:linear-gradient(135deg,#3b82f6,#2563eb);color:white}
+.btn-restart{background:linear-gradient(135deg,#ef4444,#dc2626);color:white}
+.hidden{display:none!important}
+.game-area{width:100%;max-width:750px}
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.round-info{background:white;padding:8px 18px;border-radius:12px;font-weight:800;color:#b45309;border:2px solid #fbbf24}
+.score-info{background:white;padding:8px 18px;border-radius:12px;font-weight:800;color:#16a34a;border:2px solid #bbf7d0}
+.level-badge{padding:5px 14px;border-radius:8px;font-weight:800;font-size:.85em;color:white}
+.q-card{background:white;border:2px solid #fbbf24;border-radius:20px;padding:24px;text-align:center;margin-bottom:12px;transition:.4s;box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.q-card.flash-correct{border-color:#22c55e;background:#f0fdf4}
+.q-card.flash-wrong{border-color:#ef4444;background:#fef2f2}
+.q-text{font-family:&amp;#x27;Baloo 2&amp;#x27;,cursive;font-size:clamp(1.3em,3.5vw,2em);margin:8px 0 16px;line-height:1.3;color:#1e293b}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:600px;margin:0 auto}
+.option-btn{padding:14px 18px;border-radius:14px;border:3px solid #e2e8f0;background:#f8fafc;color:#1e293b;font-size:clamp(1em,2vw,1.25em);font-weight:700;cursor:pointer;transition:.3s;text-align:center}
+.option-btn:hover{border-color:#f59e0b;background:#fffbeb;transform:scale(1.02)}
+.option-btn.correct{border-color:#22c55e;background:#dcfce7;color:#166534}
+.option-btn.wrong{border-color:#ef4444;background:#fee2e2;color:#991b1b}
+.option-btn.disabled{pointer-events:none;opacity:.7}
+.feedback{font-family:&amp;#x27;Baloo 2&amp;#x27;,cursive;font-size:1.4em;margin:10px 0;min-height:30px}
+.feedback.correct{color:#16a34a}.feedback.wrong{color:#dc2626}
+.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.result-card{background:white;border-radius:24px;padding:30px;box-shadow:0 8px 32px rgba(0,0,0,.06);text-align:center;width:100%;max-width:550px;border:2px solid #fbbf24}
+.trophy{font-size:4em;margin-bottom:6px}
+.result-title{font-family:&amp;#x27;Baloo 2&amp;#x27;,cursive;font-size:1.8em;color:#b45309}
+.result-detail{margin:12px 0;font-weight:700;font-size:1.1em}
+.stars{font-size:2em;margin:8px 0}
+.confetti-piece{position:fixed;top:-20px;z-index:10000;animation:confetti-fall var(--fall-duration) ease-out forwards}
+@keyframes confetti-fall{to{top:110vh;transform:rotate(var(--rotation))}}
+@media(max-width:600px){.options-grid{grid-template-columns:1fr}.level-info{grid-template-columns:1fr}}
+&amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;div class=&amp;quot;container&amp;quot;&amp;gt;
+  &amp;lt;div id=&amp;quot;setupScreen&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;⚔️ Đấu Trường Tri Thức&amp;lt;/h1&amp;gt;
+    &amp;lt;p class=&amp;quot;subtitle&amp;quot;&amp;gt;Trạng nguyên nhí • 100 câu Toán + 100 câu Tiếng Việt • 4 cấp độ&amp;lt;/p&amp;gt;
+    &amp;lt;div class=&amp;quot;setup-card&amp;quot;&amp;gt;
+      &amp;lt;label&amp;gt;📚 Chọn môn thi:&amp;lt;/label&amp;gt;
+      &amp;lt;select id=&amp;quot;subjectSelect&amp;quot;&amp;gt;
+        &amp;lt;option value=&amp;quot;math&amp;quot;&amp;gt;🔢 Toán học (100 câu)&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;viet&amp;quot;&amp;gt;📖 Tiếng Việt (100 câu)&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;mix&amp;quot;&amp;gt;🎲 Tổng hợp (Toán + Tiếng Việt)&amp;lt;/option&amp;gt;
+      &amp;lt;/select&amp;gt;
+      &amp;lt;label&amp;gt;🎯 Chọn cấp độ:&amp;lt;/label&amp;gt;
+      &amp;lt;select id=&amp;quot;levelSelect&amp;quot;&amp;gt;
+        &amp;lt;option value=&amp;quot;all&amp;quot;&amp;gt;🌟 Tất cả cấp độ&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;easy&amp;quot;&amp;gt;🟢 Nhận biết&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;medium&amp;quot;&amp;gt;🔵 Thông hiểu&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;hard&amp;quot;&amp;gt;🟡 Vận dụng&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;master&amp;quot;&amp;gt;🔴 Vận dụng cao&amp;lt;/option&amp;gt;
+      &amp;lt;/select&amp;gt;
+      &amp;lt;label&amp;gt;📝 Số câu mỗi lần chơi:&amp;lt;/label&amp;gt;
+      &amp;lt;select id=&amp;quot;qCount&amp;quot;&amp;gt;
+        &amp;lt;option value=&amp;quot;10&amp;quot;&amp;gt;10 câu&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;15&amp;quot; selected&amp;gt;15 câu&amp;lt;/option&amp;gt;
+        &amp;lt;option value=&amp;quot;20&amp;quot;&amp;gt;20 câu&amp;lt;/option&amp;gt;
+      &amp;lt;/select&amp;gt;
+      &amp;lt;div class=&amp;quot;level-info&amp;quot;&amp;gt;
+        &amp;lt;div class=&amp;quot;level-tag l1&amp;quot;&amp;gt;🟢 Nhận biết&amp;lt;/div&amp;gt;
+        &amp;lt;div class=&amp;quot;level-tag l2&amp;quot;&amp;gt;🔵 Thông hiểu&amp;lt;/div&amp;gt;
+        &amp;lt;div class=&amp;quot;level-tag l3&amp;quot;&amp;gt;🟡 Vận dụng&amp;lt;/div&amp;gt;
+        &amp;lt;div class=&amp;quot;level-tag l4&amp;quot;&amp;gt;🔴 Vận dụng cao&amp;lt;/div&amp;gt;
+      &amp;lt;/div&amp;gt;
+      &amp;lt;button class=&amp;quot;btn btn-go&amp;quot; onclick=&amp;quot;startGame()&amp;quot;&amp;gt;⚔️ VÀO ĐẤU TRƯỜNG&amp;lt;/button&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+  &amp;lt;div id=&amp;quot;gameScreen&amp;quot; class=&amp;quot;game-area hidden&amp;quot;&amp;gt;
+    &amp;lt;div class=&amp;quot;top-bar&amp;quot;&amp;gt;
+      &amp;lt;div class=&amp;quot;round-info&amp;quot; id=&amp;quot;roundInfo&amp;quot;&amp;gt;Câu 1/25&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;level-badge&amp;quot; id=&amp;quot;levelBadge&amp;quot; style=&amp;quot;background:#22c55e&amp;quot;&amp;gt;Nhận biết&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;score-info&amp;quot; id=&amp;quot;scoreInfo&amp;quot;&amp;gt;⭐ 0&amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;div class=&amp;quot;q-card&amp;quot; id=&amp;quot;qCard&amp;quot;&amp;gt;
+      &amp;lt;div class=&amp;quot;q-text&amp;quot; id=&amp;quot;qText&amp;quot;&amp;gt;Câu hỏi&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;options-grid&amp;quot; id=&amp;quot;optionsGrid&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;feedback&amp;quot; id=&amp;quot;feedback&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;div class=&amp;quot;controls&amp;quot;&amp;gt;&amp;lt;button class=&amp;quot;btn btn-next&amp;quot; id=&amp;quot;btnNext&amp;quot; onclick=&amp;quot;nextQ()&amp;quot; style=&amp;quot;display:none&amp;quot;&amp;gt;Câu tiếp ➜&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+  &amp;lt;div id=&amp;quot;resultScreen&amp;quot; class=&amp;quot;hidden&amp;quot;&amp;gt;
+    &amp;lt;div class=&amp;quot;result-card&amp;quot;&amp;gt;
+      &amp;lt;div class=&amp;quot;trophy&amp;quot;&amp;gt;🏆&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;result-title&amp;quot; id=&amp;quot;resultTitle&amp;quot;&amp;gt;KẾT QUẢ&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;stars&amp;quot; id=&amp;quot;starsDisplay&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;result-detail&amp;quot; id=&amp;quot;resultDetail&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+      &amp;lt;div class=&amp;quot;controls&amp;quot;&amp;gt;
+        &amp;lt;button class=&amp;quot;btn btn-restart&amp;quot; onclick=&amp;quot;resetAll()&amp;quot;&amp;gt;🔄 Thi lại&amp;lt;/button&amp;gt;
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;script&amp;gt;
+let _aC;function _iA(){if(!_aC)_aC=new(window.AudioContext||window.webkitAudioContext)()}
+function _pT(f,d,t,v){_iA();const o=_aC.createOscillator(),g=_aC.createGain();o.type=t||&amp;#x27;sine&amp;#x27;;o.frequency.value=f;g.gain.value=v||.15;g.gain.exponentialRampToValueAtTime(.001,_aC.currentTime+d);o.connect(g);g.connect(_aC.destination);o.start();o.stop(_aC.currentTime+d)}
+function sndOk(){_pT(523,.08,&amp;#x27;sine&amp;#x27;,.2);setTimeout(()=&amp;gt;_pT(659,.08,&amp;#x27;sine&amp;#x27;,.2),80);setTimeout(()=&amp;gt;_pT(784,.15,&amp;#x27;sine&amp;#x27;,.2),160)}
+function sndNo(){_pT(200,.25,&amp;#x27;sawtooth&amp;#x27;,.12)}
+function sndWin(){[523,587,659,784,1047].forEach((f,i)=&amp;gt;setTimeout(()=&amp;gt;_pT(f,.18,&amp;#x27;sine&amp;#x27;,.2),i*100))}
+
+var MATH=[
+// === NHẬN BIẾT (25 câu) ===
+{q:&amp;quot;2 + 3 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;5 + 4 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;7&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;7 - 2 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;3&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;10 - 6 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số nào lớn hơn: 3 hay 8?&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;bằng nhau&amp;quot;,&amp;quot;không so được&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số nào bé hơn: 6 hay 2?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;bằng nhau&amp;quot;,&amp;quot;không so được&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Đếm: có bao nhiêu ngón tay trên một bàn tay?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;10&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;1 + 1 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;0&amp;quot;,&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;8 - 0 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;0&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;80&amp;quot;,&amp;quot;9&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số liền sau số 5 là số nào?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;3&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số liền trước số 9 là số nào?&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;6&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;3 + 0 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;0&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;30&amp;quot;,&amp;quot;1&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Hình tròn có bao nhiêu cạnh?&amp;quot;,o:[&amp;quot;0&amp;quot;,&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;4&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Hình tam giác có bao nhiêu cạnh?&amp;quot;,o:[&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số lớn nhất trong các số 2, 5, 1 là số nào?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;3&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số bé nhất trong các số 7, 3, 9 là số nào?&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;1&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;6 + 1 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;9 - 5 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Số 0 đứng ở vị trí nào trên tia số?&amp;quot;,o:[&amp;quot;đầu tiên&amp;quot;,&amp;quot;cuối cùng&amp;quot;,&amp;quot;ở giữa&amp;quot;,&amp;quot;không có&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;4 + 5 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;7&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;10 - 1 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Hình vuông có bao nhiêu cạnh?&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;2 + 6 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;7 + 3 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;8&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;8 - 3 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+// === THÔNG HIỂU (25 câu) ===
+{q:&amp;quot;Điền dấu thích hợp: 5 ... 8&amp;quot;,o:[&amp;quot;lớn hơn&amp;quot;,&amp;quot;bé hơn&amp;quot;,&amp;quot;bằng&amp;quot;,&amp;quot;không biết&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số nào cần điền vào chỗ trống: 3 + ... = 7&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số nào cần điền vào chỗ trống: ... + 2 = 9&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số nào cần điền vào chỗ trống: 10 - ... = 4&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;4&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Sắp xếp các số theo thứ tự từ bé đến lớn: 5, 2, 8&amp;quot;,o:[&amp;quot;2, 5, 8&amp;quot;,&amp;quot;5, 2, 8&amp;quot;,&amp;quot;8, 5, 2&amp;quot;,&amp;quot;2, 8, 5&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Sắp xếp các số theo thứ tự từ lớn đến bé: 3, 9, 6&amp;quot;,o:[&amp;quot;3, 6, 9&amp;quot;,&amp;quot;9, 6, 3&amp;quot;,&amp;quot;6, 3, 9&amp;quot;,&amp;quot;9, 3, 6&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;6 + 3 có bằng 3 + 6 không?&amp;quot;,o:[&amp;quot;có, đều bằng 9&amp;quot;,&amp;quot;không&amp;quot;,&amp;quot;bằng 63&amp;quot;,&amp;quot;không tính được&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số liền sau số 10 là số nào?&amp;quot;,o:[&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số 14 gồm mấy chục và mấy đơn vị?&amp;quot;,o:[&amp;quot;1 chục 4 đơn vị&amp;quot;,&amp;quot;4 chục 1 đơn vị&amp;quot;,&amp;quot;14 đơn vị&amp;quot;,&amp;quot;0 chục 14 đơn vị&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Một tuần có bao nhiêu ngày?&amp;quot;,o:[&amp;quot;5 ngày&amp;quot;,&amp;quot;6 ngày&amp;quot;,&amp;quot;7 ngày&amp;quot;,&amp;quot;8 ngày&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số tròn chục nào bé hơn 30?&amp;quot;,o:[&amp;quot;30&amp;quot;,&amp;quot;40&amp;quot;,&amp;quot;20&amp;quot;,&amp;quot;50&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;15 gồm 1 chục và bao nhiêu đơn vị?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;0&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;7 + 8 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;13&amp;quot;,&amp;quot;14&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;16&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;16 - 9 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Số liền trước số 20 là số nào?&amp;quot;,o:[&amp;quot;18&amp;quot;,&amp;quot;19&amp;quot;,&amp;quot;21&amp;quot;,&amp;quot;17&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;12 + 5 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;15&amp;quot;,&amp;quot;16&amp;quot;,&amp;quot;17&amp;quot;,&amp;quot;18&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;18 - 7 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền dấu thích hợp: 9 + 3 ... 15&amp;quot;,o:[&amp;quot;lớn hơn&amp;quot;,&amp;quot;bé hơn&amp;quot;,&amp;quot;bằng&amp;quot;,&amp;quot;không biết&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Có 5 quả táo đỏ và 3 quả táo xanh. Hỏi có tất cả bao nhiêu quả táo?&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;6&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Lan có 10 cái kẹo, Lan cho bạn 4 cái. Hỏi Lan còn bao nhiêu cái kẹo?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Kim ngắn chỉ số 3, kim dài chỉ số 12. Đồng hồ chỉ mấy giờ?&amp;quot;,o:[&amp;quot;3 giờ&amp;quot;,&amp;quot;12 giờ&amp;quot;,&amp;quot;9 giờ&amp;quot;,&amp;quot;6 giờ&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Hình nào có 4 cạnh bằng nhau?&amp;quot;,o:[&amp;quot;hình tam giác&amp;quot;,&amp;quot;hình vuông&amp;quot;,&amp;quot;hình tròn&amp;quot;,&amp;quot;hình chữ nhật&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;13 - 6 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Trong các số 11, 15, 19, 13 - số nào lớn nhất?&amp;quot;,o:[&amp;quot;11&amp;quot;,&amp;quot;13&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;19&amp;quot;],a:3,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;9 + 6 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;13&amp;quot;,&amp;quot;14&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;16&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+// === VẬN DỤNG (25 câu) ===
+{q:&amp;quot;An có 7 viên bi, Bình cho An thêm 5 viên bi. Hỏi An có tất cả bao nhiêu viên bi?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Trên cây có 14 con chim, bay đi 6 con. Hỏi trên cây còn bao nhiêu con chim?&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Mẹ mua 8 quả cam và 7 quả táo. Hỏi mẹ mua tất cả bao nhiêu quả?&amp;quot;,o:[&amp;quot;13&amp;quot;,&amp;quot;14&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;16&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Lớp 1A có 15 bạn nữ và 10 bạn nam. Hỏi lớp 1A có tất cả bao nhiêu bạn?&amp;quot;,o:[&amp;quot;20&amp;quot;,&amp;quot;25&amp;quot;,&amp;quot;30&amp;quot;,&amp;quot;35&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Nam có 12 quyển vở, Nam cho bạn 5 quyển. Hỏi Nam còn bao nhiêu quyển vở?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;2 + 3 + 4 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;7&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;15 - 3 - 2 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Số nào cần điền: ... - 5 = 8&amp;quot;,o:[&amp;quot;3&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;,&amp;quot;14&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Một hộp có 6 bút xanh và 4 bút đỏ. Lấy ra 3 bút. Hỏi trong hộp còn bao nhiêu bút?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Hôm nay là thứ Ba. Hỏi ngày mai là thứ mấy?&amp;quot;,o:[&amp;quot;thứ Hai&amp;quot;,&amp;quot;thứ Tư&amp;quot;,&amp;quot;thứ Năm&amp;quot;,&amp;quot;thứ Ba&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Bạn Hoa đếm được 20 bông hoa trong vườn. Bạn ấy hái 8 bông. Hỏi trong vườn còn bao nhiêu bông hoa?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;35 + 14 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;48&amp;quot;,&amp;quot;49&amp;quot;,&amp;quot;50&amp;quot;,&amp;quot;39&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;67 - 25 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;42&amp;quot;,&amp;quot;43&amp;quot;,&amp;quot;44&amp;quot;,&amp;quot;32&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Tìm số lớn nhất có hai chữ số mà chữ số hàng đơn vị là 3&amp;quot;,o:[&amp;quot;93&amp;quot;,&amp;quot;83&amp;quot;,&amp;quot;73&amp;quot;,&amp;quot;33&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Có 3 bạn, mỗi bạn có 2 cái kẹo. Hỏi cả 3 bạn có tất cả bao nhiêu cái kẹo?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;48 + 21 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;67&amp;quot;,&amp;quot;68&amp;quot;,&amp;quot;69&amp;quot;,&amp;quot;70&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;76 - 34 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;40&amp;quot;,&amp;quot;41&amp;quot;,&amp;quot;42&amp;quot;,&amp;quot;43&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Bình có 16 viên kẹo, Bình ăn 4 viên rồi cho bạn 5 viên. Hỏi Bình còn bao nhiêu viên kẹo?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Điền số: 2, 4, 6, 8, ...&amp;quot;,o:[&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Điền số: 1, 3, 5, 7, ...&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Số lớn nhất có một chữ số là số nào?&amp;quot;,o:[&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;0&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Số bé nhất có hai chữ số là số nào?&amp;quot;,o:[&amp;quot;0&amp;quot;,&amp;quot;1&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Trong vườn có 9 cây cam và 6 cây bưởi. Hỏi vườn có tất cả bao nhiêu cây?&amp;quot;,o:[&amp;quot;13&amp;quot;,&amp;quot;14&amp;quot;,&amp;quot;15&amp;quot;,&amp;quot;16&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Mẹ có 17 quả trứng, mẹ dùng 8 quả để làm bánh. Hỏi mẹ còn bao nhiêu quả trứng?&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Một bàn có 4 chân. Hỏi 2 bàn có tất cả bao nhiêu chân?&amp;quot;,o:[&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;10&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+// === VẬN DỤNG CAO (25 câu) ===
+{q:&amp;quot;An có nhiều hơn Bình 3 viên bi. Bình có 5 viên bi. Hỏi An có bao nhiêu viên bi?&amp;quot;,o:[&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;10&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Lan có ít hơn Mai 4 cái kẹo. Mai có 9 cái kẹo. Hỏi Lan có bao nhiêu cái kẹo?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;13&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Tổng hai số bằng 10. Một số là 3. Hỏi số kia bằng bao nhiêu?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Hiệu hai số bằng 5. Số lớn là 12. Hỏi số bé bằng bao nhiêu?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Bạn Hùng nghĩ một số, cộng thêm 6 được 15. Hỏi số Hùng nghĩ là bao nhiêu?&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Có 18 học sinh xếp thành 2 hàng đều nhau. Hỏi mỗi hàng có bao nhiêu học sinh?&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;An đứng thứ 5 từ trái sang và thứ 8 từ phải sang. Hỏi hàng đó có bao nhiêu bạn?&amp;quot;,o:[&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;,&amp;quot;14&amp;quot;,&amp;quot;11&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Mẹ hơn con 25 tuổi. Con 6 tuổi. Hỏi mẹ bao nhiêu tuổi?&amp;quot;,o:[&amp;quot;19&amp;quot;,&amp;quot;25&amp;quot;,&amp;quot;31&amp;quot;,&amp;quot;35&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Một sợi dây dài 20 xăng-ti-mét. Cắt đi 8 xăng-ti-mét. Hỏi sợi dây còn dài bao nhiêu xăng-ti-mét?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;3 + 3 + 3 + 3 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;],a:3,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Có bao nhiêu số có một chữ số?&amp;quot;,o:[&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Bạn An có hai cây bút chì màu xanh và đỏ. Hỏi có bao nhiêu cách tô màu hai mặt của tờ giấy?&amp;quot;,o:[&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Số có hai chữ số mà tổng hai chữ số bằng 3 là số nào?&amp;quot;,o:[&amp;quot;12 và 21 và 30&amp;quot;,&amp;quot;13 và 31&amp;quot;,&amp;quot;11 và 22&amp;quot;,&amp;quot;10 và 31&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Điền số vào dãy: 10, 20, 30, 40, ...&amp;quot;,o:[&amp;quot;45&amp;quot;,&amp;quot;50&amp;quot;,&amp;quot;55&amp;quot;,&amp;quot;60&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Có 5 con gà và mấy con vịt. Tất cả có 12 con. Hỏi có bao nhiêu con vịt?&amp;quot;,o:[&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Tuổi bố gấp đôi tuổi chú. Chú 20 tuổi. Hỏi bố bao nhiêu tuổi?&amp;quot;,o:[&amp;quot;30&amp;quot;,&amp;quot;35&amp;quot;,&amp;quot;40&amp;quot;,&amp;quot;45&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Một cái bàn hình chữ nhật ngồi được 6 người. Hỏi 2 cái bàn ghép lại thì ngồi được nhiều nhất bao nhiêu người?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;8&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Năm nay em 6 tuổi. Hỏi 5 năm nữa em bao nhiêu tuổi?&amp;quot;,o:[&amp;quot;10&amp;quot;,&amp;quot;11&amp;quot;,&amp;quot;12&amp;quot;,&amp;quot;13&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;47 + 38 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;75&amp;quot;,&amp;quot;85&amp;quot;,&amp;quot;86&amp;quot;,&amp;quot;84&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;92 - 57 bằng bao nhiêu?&amp;quot;,o:[&amp;quot;35&amp;quot;,&amp;quot;45&amp;quot;,&amp;quot;25&amp;quot;,&amp;quot;34&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Tìm x biết: x + 15 = 20&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;35&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Tìm x biết: 18 - x = 9&amp;quot;,o:[&amp;quot;7&amp;quot;,&amp;quot;8&amp;quot;,&amp;quot;9&amp;quot;,&amp;quot;10&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Có 4 đội bóng. Mỗi đội đá với nhau 1 trận. Hỏi có tất cả bao nhiêu trận?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;8&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Trong hộp có bi đỏ và bi xanh. Lấy ra 1 viên, có bao nhiêu kết quả có thể xảy ra?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Nếu hôm nay là thứ Sáu, thì 3 ngày nữa là thứ mấy?&amp;quot;,o:[&amp;quot;thứ Hai&amp;quot;,&amp;quot;thứ Bảy&amp;quot;,&amp;quot;Chủ nhật&amp;quot;,&amp;quot;thứ Ba&amp;quot;],a:0,d:&amp;quot;master&amp;quot;}
+];
+
+var TV=[
+// === NHẬN BIẾT (25 câu) ===
+{q:&amp;quot;Chữ cái đầu tiên trong bảng chữ cái Tiếng Việt là chữ nào?&amp;quot;,o:[&amp;quot;b&amp;quot;,&amp;quot;a&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;con mèo&amp;#x27; có bao nhiêu tiếng?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào viết đúng chính tả?&amp;quot;,o:[&amp;quot;con nèo&amp;quot;,&amp;quot;con mèo&amp;quot;,&amp;quot;con mào&amp;quot;,&amp;quot;con nào&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Chữ cái nào là nguyên âm?&amp;quot;,o:[&amp;quot;b&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;a&amp;quot;,&amp;quot;d&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Tiếng &amp;#x27;bàn&amp;#x27; có vần gì?&amp;quot;,o:[&amp;quot;an&amp;quot;,&amp;quot;ăn&amp;quot;,&amp;quot;ân&amp;quot;,&amp;quot;on&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào chỉ con vật?&amp;quot;,o:[&amp;quot;cái bàn&amp;quot;,&amp;quot;ngôi nhà&amp;quot;,&amp;quot;con chó&amp;quot;,&amp;quot;cái ghế&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào chỉ đồ vật?&amp;quot;,o:[&amp;quot;con mèo&amp;quot;,&amp;quot;cái bàn&amp;quot;,&amp;quot;cây bàng&amp;quot;,&amp;quot;bầu trời&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào chỉ người?&amp;quot;,o:[&amp;quot;con mèo&amp;quot;,&amp;quot;bông hoa&amp;quot;,&amp;quot;ông ngoại&amp;quot;,&amp;quot;quyển sách&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Tiếng &amp;#x27;hoa&amp;#x27; có âm đầu là gì?&amp;quot;,o:[&amp;quot;h&amp;quot;,&amp;quot;o&amp;quot;,&amp;quot;a&amp;quot;,&amp;quot;ho&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Câu nào viết đúng (có dấu chấm cuối câu)?&amp;quot;,o:[&amp;quot;Em yêu mẹ.&amp;quot;,&amp;quot;em yêu mẹ&amp;quot;,&amp;quot;Em yêu mẹ&amp;quot;,&amp;quot;em yêu Mẹ&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào chỉ màu sắc?&amp;quot;,o:[&amp;quot;to&amp;quot;,&amp;quot;nhỏ&amp;quot;,&amp;quot;đỏ&amp;quot;,&amp;quot;chạy&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào chỉ hành động?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;ghế&amp;quot;,&amp;quot;nhảy&amp;quot;,&amp;quot;đẹp&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Tiếng &amp;#x27;cá&amp;#x27; có thanh gì?&amp;quot;,o:[&amp;quot;thanh ngang&amp;quot;,&amp;quot;thanh sắc&amp;quot;,&amp;quot;thanh huyền&amp;quot;,&amp;quot;thanh hỏi&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Tiếng &amp;#x27;bà&amp;#x27; có thanh gì?&amp;quot;,o:[&amp;quot;thanh ngang&amp;quot;,&amp;quot;thanh sắc&amp;quot;,&amp;quot;thanh huyền&amp;quot;,&amp;quot;thanh hỏi&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào viết đúng chính tả?&amp;quot;,o:[&amp;quot;lung linh&amp;quot;,&amp;quot;nung linh&amp;quot;,&amp;quot;lung ninh&amp;quot;,&amp;quot;nung ninh&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;trường học&amp;#x27; có bao nhiêu tiếng?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;to&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;lớn&amp;quot;,&amp;quot;nhỏ&amp;quot;,&amp;quot;cao&amp;quot;,&amp;quot;dài&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;nóng&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;ấm&amp;quot;,&amp;quot;mát&amp;quot;,&amp;quot;lạnh&amp;quot;,&amp;quot;nắng&amp;quot;],a:2,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Chữ cái nào đứng sau chữ &amp;#x27;b&amp;#x27; trong bảng chữ cái?&amp;quot;,o:[&amp;quot;a&amp;quot;,&amp;quot;c&amp;quot;,&amp;quot;d&amp;quot;,&amp;quot;đ&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Tiếng nào có vần &amp;#x27;an&amp;#x27;?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;bón&amp;quot;,&amp;quot;bún&amp;quot;,&amp;quot;bên&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ nào viết đúng: con gì sống dưới nước?&amp;quot;,o:[&amp;quot;con cá&amp;quot;,&amp;quot;con ká&amp;quot;,&amp;quot;con ca&amp;quot;,&amp;quot;con ga&amp;quot;],a:0,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;bông hoa&amp;#x27; có bao nhiêu tiếng?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;cao&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;to&amp;quot;,&amp;quot;thấp&amp;quot;,&amp;quot;dài&amp;quot;,&amp;quot;lớn&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;vui&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;cười&amp;quot;,&amp;quot;buồn&amp;quot;,&amp;quot;hát&amp;quot;,&amp;quot;khóc&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+{q:&amp;quot;Tên riêng nào viết đúng?&amp;quot;,o:[&amp;quot;hà nội&amp;quot;,&amp;quot;Hà Nội&amp;quot;,&amp;quot;hà Nội&amp;quot;,&amp;quot;Hà nội&amp;quot;],a:1,d:&amp;quot;easy&amp;quot;},
+// === THÔNG HIỂU (25 câu) ===
+{q:&amp;quot;Tiếng &amp;#x27;trường&amp;#x27; có vần gì?&amp;quot;,o:[&amp;quot;ương&amp;quot;,&amp;quot;uông&amp;quot;,&amp;quot;ưởng&amp;quot;,&amp;quot;ương&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Dấu chấm hỏi (?) đặt cuối loại câu nào?&amp;quot;,o:[&amp;quot;câu kể&amp;quot;,&amp;quot;câu hỏi&amp;quot;,&amp;quot;câu cảm&amp;quot;,&amp;quot;câu cầu khiến&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Dấu chấm than (!) đặt cuối loại câu nào?&amp;quot;,o:[&amp;quot;câu kể&amp;quot;,&amp;quot;câu hỏi&amp;quot;,&amp;quot;câu cảm&amp;quot;,&amp;quot;câu cầu khiến&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Câu nào là câu hỏi?&amp;quot;,o:[&amp;quot;Em đi học.&amp;quot;,&amp;quot;Bạn tên là gì?&amp;quot;,&amp;quot;Trời đẹp quá!&amp;quot;,&amp;quot;Em rất ngoan.&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền chữ cái thích hợp: con t...âu (trâu)&amp;quot;,o:[&amp;quot;r&amp;quot;,&amp;quot;d&amp;quot;,&amp;quot;gi&amp;quot;,&amp;quot;tr&amp;quot;],a:3,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền vần thích hợp: c...m (cơm)&amp;quot;,o:[&amp;quot;ơ&amp;quot;,&amp;quot;o&amp;quot;,&amp;quot;ô&amp;quot;,&amp;quot;a&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ nào cùng nghĩa với từ &amp;#x27;xinh đẹp&amp;#x27;?&amp;quot;,o:[&amp;quot;xấu xí&amp;quot;,&amp;quot;đẹp đẽ&amp;quot;,&amp;quot;to lớn&amp;quot;,&amp;quot;bé nhỏ&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ nào cùng nghĩa với từ &amp;#x27;vui vẻ&amp;#x27;?&amp;quot;,o:[&amp;quot;buồn bã&amp;quot;,&amp;quot;hạnh phúc&amp;quot;,&amp;quot;giận dữ&amp;quot;,&amp;quot;lo lắng&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền từ thích hợp: Bầu trời rất ...&amp;quot;,o:[&amp;quot;xanh&amp;quot;,&amp;quot;đỏ&amp;quot;,&amp;quot;vàng&amp;quot;,&amp;quot;tím&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Tiếng &amp;#x27;bạn&amp;#x27; có thanh gì?&amp;quot;,o:[&amp;quot;thanh ngang&amp;quot;,&amp;quot;thanh sắc&amp;quot;,&amp;quot;thanh nặng&amp;quot;,&amp;quot;thanh hỏi&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Tiếng nào có chứa vần &amp;#x27;ong&amp;#x27;?&amp;quot;,o:[&amp;quot;bong bóng&amp;quot;,&amp;quot;bông hoa&amp;quot;,&amp;quot;buồn bã&amp;quot;,&amp;quot;bón phân&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ nào viết đúng chính tả?&amp;quot;,o:[&amp;quot;sáng sớm&amp;quot;,&amp;quot;xáng sớm&amp;quot;,&amp;quot;sáng xớm&amp;quot;,&amp;quot;xáng xớm&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền chữ cái: ...ôi nhà (ngôi)&amp;quot;,o:[&amp;quot;g&amp;quot;,&amp;quot;ng&amp;quot;,&amp;quot;nh&amp;quot;,&amp;quot;n&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Câu &amp;#x27;Trời mưa to quá!&amp;#x27; là loại câu gì?&amp;quot;,o:[&amp;quot;câu kể&amp;quot;,&amp;quot;câu hỏi&amp;quot;,&amp;quot;câu cảm thán&amp;quot;,&amp;quot;câu cầu khiến&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ nào chỉ tính chất (đặc điểm)?&amp;quot;,o:[&amp;quot;nhà&amp;quot;,&amp;quot;chạy&amp;quot;,&amp;quot;đẹp&amp;quot;,&amp;quot;mèo&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;quê hương&amp;#x27; có bao nhiêu tiếng?&amp;quot;,o:[&amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;,&amp;quot;4&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Viết đúng chính tả: hoa ...ồng (hồng)&amp;quot;,o:[&amp;quot;h&amp;quot;,&amp;quot;r&amp;quot;,&amp;quot;d&amp;quot;,&amp;quot;gi&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền từ: Mẹ em rất ... (chỉ tính cách tốt)&amp;quot;,o:[&amp;quot;hiền&amp;quot;,&amp;quot;dữ&amp;quot;,&amp;quot;xấu&amp;quot;,&amp;quot;lười&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ nào có vần &amp;#x27;inh&amp;#x27;?&amp;quot;,o:[&amp;quot;xinh&amp;quot;,&amp;quot;xin&amp;quot;,&amp;quot;xanh&amp;quot;,&amp;quot;xoan&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;sáng&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;đêm&amp;quot;,&amp;quot;tối&amp;quot;,&amp;quot;mây&amp;quot;,&amp;quot;mưa&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;nhanh&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;chạy&amp;quot;,&amp;quot;chậm&amp;quot;,&amp;quot;bay&amp;quot;,&amp;quot;xa&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Từ trái nghĩa với &amp;#x27;dài&amp;#x27; là từ nào?&amp;quot;,o:[&amp;quot;to&amp;quot;,&amp;quot;cao&amp;quot;,&amp;quot;ngắn&amp;quot;,&amp;quot;rộng&amp;quot;],a:2,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Trong câu &amp;#x27;Con mèo đang ngủ&amp;#x27;, từ nào chỉ hành động?&amp;quot;,o:[&amp;quot;con&amp;quot;,&amp;quot;mèo&amp;quot;,&amp;quot;đang&amp;quot;,&amp;quot;ngủ&amp;quot;],a:3,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Điền chữ cái: ...ách (sách)&amp;quot;,o:[&amp;quot;x&amp;quot;,&amp;quot;s&amp;quot;,&amp;quot;tr&amp;quot;,&amp;quot;ch&amp;quot;],a:1,d:&amp;quot;medium&amp;quot;},
+{q:&amp;quot;Bài thơ thường có đặc điểm gì?&amp;quot;,o:[&amp;quot;có vần&amp;quot;,&amp;quot;có số&amp;quot;,&amp;quot;có bảng&amp;quot;,&amp;quot;có phép tính&amp;quot;],a:0,d:&amp;quot;medium&amp;quot;},
+// === VẬN DỤNG (25 câu) ===
+{q:&amp;quot;Đặt câu với từ &amp;#x27;ngoan&amp;#x27;: câu nào đúng?&amp;quot;,o:[&amp;quot;Em bé rất ngoan.&amp;quot;,&amp;quot;Ngoan em rất bé.&amp;quot;,&amp;quot;Bé em ngoan rất.&amp;quot;,&amp;quot;Rất ngoan em bé.&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Câu nào có sử dụng dấu phẩy đúng?&amp;quot;,o:[&amp;quot;Em có bút, vở và sách.&amp;quot;,&amp;quot;Em, có bút vở và sách.&amp;quot;,&amp;quot;Em có, bút vở và sách.&amp;quot;,&amp;quot;Em có bút vở, và sách.&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Từ nào không cùng nhóm với các từ còn lại?&amp;quot;,o:[&amp;quot;mèo&amp;quot;,&amp;quot;chó&amp;quot;,&amp;quot;gà&amp;quot;,&amp;quot;bàn&amp;quot;],a:3,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Từ nào không cùng nhóm với các từ còn lại?&amp;quot;,o:[&amp;quot;đỏ&amp;quot;,&amp;quot;xanh&amp;quot;,&amp;quot;vàng&amp;quot;,&amp;quot;chạy&amp;quot;],a:3,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Điền từ vào chỗ trống: &amp;#x27;Con mèo ... rất dễ thương&amp;#x27; (từ chỉ đặc điểm)&amp;quot;,o:[&amp;quot;chạy&amp;quot;,&amp;quot;nhỏ&amp;quot;,&amp;quot;ăn&amp;quot;,&amp;quot;ngủ&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Nối nghĩa đúng: &amp;#x27;Nhanh như ...&amp;#x27;&amp;quot;,o:[&amp;quot;rùa&amp;quot;,&amp;quot;sên&amp;quot;,&amp;quot;chớp&amp;quot;,&amp;quot;ốc&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Nối nghĩa đúng: &amp;#x27;Chậm như ...&amp;#x27;&amp;quot;,o:[&amp;quot;thỏ&amp;quot;,&amp;quot;ngựa&amp;quot;,&amp;quot;rùa&amp;quot;,&amp;quot;báo&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Viết đúng chính tả: &amp;#x27;Bé đi ... (học)&amp;#x27;&amp;quot;,o:[&amp;quot;học&amp;quot;,&amp;quot;họk&amp;quot;,&amp;quot;hoc&amp;quot;,&amp;quot;hóc&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Xếp các từ thành câu đúng: &amp;#x27;đi / Em / học / trường&amp;#x27;&amp;quot;,o:[&amp;quot;Em đi học trường.&amp;quot;,&amp;quot;Em đi trường học.&amp;quot;,&amp;quot;Đi em học trường.&amp;quot;,&amp;quot;Trường học em đi.&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Xếp các từ thành câu đúng: &amp;#x27;đẹp / Hoa / rất / nở&amp;#x27;&amp;quot;,o:[&amp;quot;Hoa nở rất đẹp.&amp;quot;,&amp;quot;Đẹp rất hoa nở.&amp;quot;,&amp;quot;Nở hoa đẹp rất.&amp;quot;,&amp;quot;Rất đẹp nở hoa.&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Từ nào trong câu &amp;#x27;Bé Mai rất ngoan&amp;#x27; là tên riêng?&amp;quot;,o:[&amp;quot;Bé&amp;quot;,&amp;quot;Mai&amp;quot;,&amp;quot;rất&amp;quot;,&amp;quot;ngoan&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Khi viết tên người, ta phải viết hoa chữ cái nào?&amp;quot;,o:[&amp;quot;tất cả&amp;quot;,&amp;quot;chữ cái đầu mỗi tiếng&amp;quot;,&amp;quot;chữ cái cuối&amp;quot;,&amp;quot;không cần viết hoa&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Câu nào viết đúng về tên riêng?&amp;quot;,o:[&amp;quot;nguyễn văn an&amp;quot;,&amp;quot;Nguyễn Văn An&amp;quot;,&amp;quot;nguyễn Văn an&amp;quot;,&amp;quot;Nguyễn văn an&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Điền từ: &amp;#x27;Em ... (yêu/thương) mẹ rất nhiều.&amp;#x27;&amp;quot;,o:[&amp;quot;yêu&amp;quot;,&amp;quot;ghét&amp;quot;,&amp;quot;sợ&amp;quot;,&amp;quot;buồn&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;lung linh&amp;#x27; diễn tả điều gì?&amp;quot;,o:[&amp;quot;tiếng động&amp;quot;,&amp;quot;ánh sáng đẹp&amp;quot;,&amp;quot;mùi hương&amp;quot;,&amp;quot;vị ngọt&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Câu &amp;#x27;Ai đi học?&amp;#x27; - từ &amp;#x27;Ai&amp;#x27; hỏi về điều gì?&amp;quot;,o:[&amp;quot;hành động&amp;quot;,&amp;quot;thời gian&amp;quot;,&amp;quot;người&amp;quot;,&amp;quot;nơi chốn&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Câu &amp;#x27;Em đi đâu?&amp;#x27; - từ &amp;#x27;đâu&amp;#x27; hỏi về điều gì?&amp;quot;,o:[&amp;quot;hành động&amp;quot;,&amp;quot;thời gian&amp;quot;,&amp;quot;người&amp;quot;,&amp;quot;nơi chốn&amp;quot;],a:3,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Tìm từ có vần &amp;#x27;ương&amp;#x27; trong câu: &amp;#x27;Con đường làng quê rất đẹp.&amp;#x27;&amp;quot;,o:[&amp;quot;con&amp;quot;,&amp;quot;đường&amp;quot;,&amp;quot;làng&amp;quot;,&amp;quot;đẹp&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Điền dấu câu: &amp;#x27;Em ơi, bạn có khỏe không...&amp;#x27;&amp;quot;,o:[&amp;quot;dấu chấm (.)&amp;quot;,&amp;quot;dấu chấm hỏi (?)&amp;quot;,&amp;quot;dấu chấm than (!)&amp;quot;,&amp;quot;dấu phẩy (,)&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Tiếng &amp;#x27;trường&amp;#x27; gồm những phần nào?&amp;quot;,o:[&amp;quot;âm đầu, vần, thanh&amp;quot;,&amp;quot;chỉ có vần&amp;quot;,&amp;quot;chỉ có âm đầu&amp;quot;,&amp;quot;không có thanh&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Viết tên thành phố đúng chính tả:&amp;quot;,o:[&amp;quot;hồ chí minh&amp;quot;,&amp;quot;Hồ chí minh&amp;quot;,&amp;quot;Hồ Chí Minh&amp;quot;,&amp;quot;hồ Chí Minh&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Từ nào là từ chỉ nghề nghiệp?&amp;quot;,o:[&amp;quot;bàn&amp;quot;,&amp;quot;hoa&amp;quot;,&amp;quot;bác sĩ&amp;quot;,&amp;quot;mưa&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Khi nào ta dùng dấu chấm (.)?&amp;quot;,o:[&amp;quot;cuối câu hỏi&amp;quot;,&amp;quot;cuối câu kể&amp;quot;,&amp;quot;cuối câu cảm thán&amp;quot;,&amp;quot;giữa câu&amp;quot;],a:1,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Điền từ: &amp;#x27;Bầu trời ... (trong/trông) xanh.&amp;#x27;&amp;quot;,o:[&amp;quot;trong&amp;quot;,&amp;quot;trông&amp;quot;,&amp;quot;chong&amp;quot;,&amp;quot;chông&amp;quot;],a:0,d:&amp;quot;hard&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;gia đình&amp;#x27; chỉ những ai?&amp;quot;,o:[&amp;quot;bạn bè&amp;quot;,&amp;quot;thầy cô&amp;quot;,&amp;quot;bố mẹ anh chị em&amp;quot;,&amp;quot;hàng xóm&amp;quot;],a:2,d:&amp;quot;hard&amp;quot;},
+// === VẬN DỤNG CAO (25 câu) ===
+{q:&amp;quot;Câu nào dùng từ so sánh?&amp;quot;,o:[&amp;quot;Em đi học.&amp;quot;,&amp;quot;Mắt em đen như hạt nhãn.&amp;quot;,&amp;quot;Trời mưa to.&amp;quot;,&amp;quot;Hoa nở đẹp.&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Trong câu &amp;#x27;Dòng sông hiền hòa chảy qua làng&amp;#x27;, từ nào tả dòng sông?&amp;quot;,o:[&amp;quot;dòng&amp;quot;,&amp;quot;hiền hòa&amp;quot;,&amp;quot;chảy&amp;quot;,&amp;quot;làng&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Đặt câu hỏi cho phần gạch chân: &amp;#x27;Em đi HỌC.&amp;#x27;&amp;quot;,o:[&amp;quot;Em đi đâu?&amp;quot;,&amp;quot;Ai đi học?&amp;quot;,&amp;quot;Em làm gì?&amp;quot;,&amp;quot;Bao giờ em đi?&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Đặt câu hỏi cho phần gạch chân: &amp;#x27;BÉ LAN đi học.&amp;#x27;&amp;quot;,o:[&amp;quot;Ai đi học?&amp;quot;,&amp;quot;Đi đâu?&amp;quot;,&amp;quot;Làm gì?&amp;quot;,&amp;quot;Khi nào?&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Từ nào là từ tượng thanh (mô phỏng âm thanh)?&amp;quot;,o:[&amp;quot;đẹp&amp;quot;,&amp;quot;xanh&amp;quot;,&amp;quot;ríu rít&amp;quot;,&amp;quot;to&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Câu tục ngữ nào nói về tình cảm gia đình?&amp;quot;,o:[&amp;quot;Có công mài sắt có ngày nên kim&amp;quot;,&amp;quot;Công cha nghĩa mẹ ơn thầy&amp;quot;,&amp;quot;Ăn quả nhớ kẻ trồng cây&amp;quot;,&amp;quot;Gần mực thì đen&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Điền từ hoàn thành câu thơ: &amp;#x27;Công cha như núi ... (Thái Sơn)&amp;#x27;&amp;quot;,o:[&amp;quot;Thái Bình&amp;quot;,&amp;quot;Thái Sơn&amp;quot;,&amp;quot;Thái Hòa&amp;quot;,&amp;quot;Thái An&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Viết đoạn mở bài cho bài văn tả con mèo, câu nào phù hợp nhất?&amp;quot;,o:[&amp;quot;Nhà em nuôi một con mèo rất đáng yêu.&amp;quot;,&amp;quot;Con mèo chạy.&amp;quot;,&amp;quot;Hoa nở đẹp.&amp;quot;,&amp;quot;Em đi học mỗi ngày.&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Tìm từ láy trong câu: &amp;#x27;Bé chạy lon ton trong sân.&amp;#x27;&amp;quot;,o:[&amp;quot;bé&amp;quot;,&amp;quot;chạy&amp;quot;,&amp;quot;lon ton&amp;quot;,&amp;quot;sân&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Từ nào không phải từ láy?&amp;quot;,o:[&amp;quot;long lanh&amp;quot;,&amp;quot;lung linh&amp;quot;,&amp;quot;lấp lánh&amp;quot;,&amp;quot;lạnh lẽo&amp;quot;],a:3,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Câu &amp;#x27;Ông mặt trời tỏa nắng vàng&amp;#x27; sử dụng biện pháp nghệ thuật gì?&amp;quot;,o:[&amp;quot;so sánh&amp;quot;,&amp;quot;nhân hóa&amp;quot;,&amp;quot;điệp từ&amp;quot;,&amp;quot;liệt kê&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Đọc câu thơ: &amp;#x27;Mẹ là ngọn gió của con&amp;#x27;. Câu thơ sử dụng biện pháp gì?&amp;quot;,o:[&amp;quot;nhân hóa&amp;quot;,&amp;quot;so sánh&amp;quot;,&amp;quot;điệp từ&amp;quot;,&amp;quot;câu hỏi&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Viết thư cho bạn, dòng đầu tiên thường ghi gì?&amp;quot;,o:[&amp;quot;tên mình&amp;quot;,&amp;quot;ngày tháng và nơi viết&amp;quot;,&amp;quot;tên bạn&amp;quot;,&amp;quot;lời chào&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Khi kể chuyện &amp;#x27;Rùa và Thỏ&amp;#x27;, bài học rút ra là gì?&amp;quot;,o:[&amp;quot;chạy nhanh là giỏi&amp;quot;,&amp;quot;kiên trì sẽ thắng&amp;quot;,&amp;quot;ngủ nhiều là tốt&amp;quot;,&amp;quot;không cần cố gắng&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;hoa hồng&amp;#x27; - từ &amp;#x27;hồng&amp;#x27; ở đây chỉ gì?&amp;quot;,o:[&amp;quot;màu sắc&amp;quot;,&amp;quot;tên loài hoa&amp;quot;,&amp;quot;mùi hương&amp;quot;,&amp;quot;hành động&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Câu &amp;#x27;Em bé cười tươi như hoa.&amp;#x27; - từ nào được so sánh với hoa?&amp;quot;,o:[&amp;quot;em bé&amp;quot;,&amp;quot;cười&amp;quot;,&amp;quot;tươi&amp;quot;,&amp;quot;cười tươi&amp;quot;],a:3,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Điền dấu câu đúng: &amp;#x27;Ôi_ cầu vồng đẹp quá_&amp;#x27;&amp;quot;,o:[&amp;quot;dấu phẩy và dấu chấm&amp;quot;,&amp;quot;dấu chấm than và dấu chấm than&amp;quot;,&amp;quot;dấu phẩy và dấu chấm than&amp;quot;,&amp;quot;dấu chấm và dấu hỏi&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Tiếng Việt có bao nhiêu thanh điệu?&amp;quot;,o:[&amp;quot;4&amp;quot;,&amp;quot;5&amp;quot;,&amp;quot;6&amp;quot;,&amp;quot;7&amp;quot;],a:2,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Sáu thanh điệu trong Tiếng Việt là những thanh nào?&amp;quot;,o:[&amp;quot;ngang, sắc, huyền, hỏi, ngã, nặng&amp;quot;,&amp;quot;ngang, sắc, huyền, hỏi&amp;quot;,&amp;quot;sắc, huyền, nặng, hỏi&amp;quot;,&amp;quot;ngang, huyền, sắc&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Xếp câu đúng: &amp;#x27;yêu / quê hương / Em / rất&amp;#x27;&amp;quot;,o:[&amp;quot;Em rất yêu quê hương.&amp;quot;,&amp;quot;Yêu em rất quê hương.&amp;quot;,&amp;quot;Quê hương rất em yêu.&amp;quot;,&amp;quot;Rất em yêu quê hương.&amp;quot;],a:0,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Trong câu &amp;#x27;Cô giáo em rất dịu dàng&amp;#x27;, chủ ngữ là gì?&amp;quot;,o:[&amp;quot;Cô giáo&amp;quot;,&amp;quot;Cô giáo em&amp;quot;,&amp;quot;em&amp;quot;,&amp;quot;dịu dàng&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Viết đúng tên dòng sông nổi tiếng ở Huế:&amp;quot;,o:[&amp;quot;sông hương&amp;quot;,&amp;quot;Sông Hương&amp;quot;,&amp;quot;sông Hương&amp;quot;,&amp;quot;Sông hương&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Từ &amp;#x27;non sông&amp;#x27; có nghĩa là gì?&amp;quot;,o:[&amp;quot;núi và sông&amp;quot;,&amp;quot;đất nước&amp;quot;,&amp;quot;cây cối&amp;quot;,&amp;quot;biển cả&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Câu &amp;#x27;Mẹ ơi, con yêu mẹ!&amp;#x27; thể hiện tình cảm gì?&amp;quot;,o:[&amp;quot;giận dữ&amp;quot;,&amp;quot;yêu thương&amp;quot;,&amp;quot;buồn bã&amp;quot;,&amp;quot;lo lắng&amp;quot;],a:1,d:&amp;quot;master&amp;quot;},
+{q:&amp;quot;Đoạn văn miêu tả thường có mấy phần chính?&amp;quot;,o:[&amp;quot;1 phần&amp;quot;,&amp;quot;2 phần&amp;quot;,&amp;quot;3 phần&amp;quot;,&amp;quot;4 phần&amp;quot;],a:2,d:&amp;quot;master&amp;quot;}
+];
+
+let cfg={},st={};
+function shuffle(a){for(let i=a.length-1;i&amp;gt;0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const levelColors={easy:&amp;#x27;#22c55e&amp;#x27;,medium:&amp;#x27;#3b82f6&amp;#x27;,hard:&amp;#x27;#f59e0b&amp;#x27;,master:&amp;#x27;#ef4444&amp;#x27;};
+const levelNames={easy:&amp;#x27;Nhận biết&amp;#x27;,medium:&amp;#x27;Thông hiểu&amp;#x27;,hard:&amp;#x27;Vận dụng&amp;#x27;,master:&amp;#x27;Vận dụng cao&amp;#x27;};
+
+function startGame(){
+  const subj=document.getElementById(&amp;#x27;subjectSelect&amp;#x27;).value;
+  const level=document.getElementById(&amp;#x27;levelSelect&amp;#x27;).value;
+  const qCount=parseInt(document.getElementById(&amp;#x27;qCount&amp;#x27;).value);
+  let bank;
+  if(subj===&amp;#x27;math&amp;#x27;)bank=MATH;
+  else if(subj===&amp;#x27;viet&amp;#x27;)bank=TV;
+  else bank=shuffle([...MATH,...TV]);
+  let pool;
+  if(level===&amp;#x27;all&amp;#x27;){pool=shuffle([...bank]).slice(0,qCount)}
+  else{pool=shuffle(bank.filter(q=&amp;gt;q.d===level)).slice(0,qCount)}
+  st={questions:pool,qIdx:0,score:0,answered:false,correct:0};
+  document.getElementById(&amp;#x27;setupScreen&amp;#x27;).classList.add(&amp;#x27;hidden&amp;#x27;);
+  document.getElementById(&amp;#x27;gameScreen&amp;#x27;).classList.remove(&amp;#x27;hidden&amp;#x27;);
+  showQ();
+}
+function showQ(){
+  if(st.qIdx&amp;gt;=st.questions.length){showResults();return}
+  st.answered=false;
+  const q=st.questions[st.qIdx];
+  document.getElementById(&amp;#x27;roundInfo&amp;#x27;).textContent=&amp;#x27;Câu &amp;#x27;+(st.qIdx+1)+&amp;#x27;/&amp;#x27;+st.questions.length;
+  document.getElementById(&amp;#x27;scoreInfo&amp;#x27;).textContent=&amp;#x27;⭐ &amp;#x27;+st.score;
+  const lb=document.getElementById(&amp;#x27;levelBadge&amp;#x27;);
+  lb.textContent=levelNames[q.d];lb.style.background=levelColors[q.d];
+  document.getElementById(&amp;#x27;qText&amp;#x27;).textContent=q.q;
+  document.getElementById(&amp;#x27;feedback&amp;#x27;).textContent=&amp;#x27;&amp;#x27;;document.getElementById(&amp;#x27;feedback&amp;#x27;).className=&amp;#x27;feedback&amp;#x27;;
+  document.getElementById(&amp;#x27;qCard&amp;#x27;).className=&amp;#x27;q-card&amp;#x27;;
+  document.getElementById(&amp;#x27;btnNext&amp;#x27;).style.display=&amp;#x27;none&amp;#x27;;
+  const og=document.getElementById(&amp;#x27;optionsGrid&amp;#x27;);og.innerHTML=&amp;#x27;&amp;#x27;;
+  q.o.forEach((opt,idx)=&amp;gt;{const b=document.createElement(&amp;#x27;button&amp;#x27;);b.className=&amp;#x27;option-btn&amp;#x27;;b.textContent=opt;b.onclick=()=&amp;gt;answer(idx);og.appendChild(b)});
+}
+function answer(idx){
+  if(st.answered)return;st.answered=true;
+  const q=st.questions[st.qIdx];const btns=document.querySelectorAll(&amp;#x27;.option-btn&amp;#x27;);
+  const fb=document.getElementById(&amp;#x27;feedback&amp;#x27;);const card=document.getElementById(&amp;#x27;qCard&amp;#x27;);
+  btns.forEach(b=&amp;gt;b.classList.add(&amp;#x27;disabled&amp;#x27;));btns[q.a].classList.add(&amp;#x27;correct&amp;#x27;);
+  const pts=q.d===&amp;#x27;easy&amp;#x27;?5:q.d===&amp;#x27;medium&amp;#x27;?10:q.d===&amp;#x27;hard&amp;#x27;?15:20;
+  if(idx===q.a){fb.className=&amp;#x27;feedback correct&amp;#x27;;fb.textContent=&amp;#x27;🎉 Chính xác! +&amp;#x27;+pts+&amp;#x27; điểm&amp;#x27;;sndOk();card.classList.add(&amp;#x27;flash-correct&amp;#x27;);st.score+=pts;st.correct++}
+  else{btns[idx].classList.add(&amp;#x27;wrong&amp;#x27;);fb.className=&amp;#x27;feedback wrong&amp;#x27;;fb.textContent=&amp;#x27;❌ Sai rồi!&amp;#x27;;sndNo();card.classList.add(&amp;#x27;flash-wrong&amp;#x27;)}
+  st.qIdx++;document.getElementById(&amp;#x27;btnNext&amp;#x27;).style.display=&amp;#x27;&amp;#x27;;
+}
+function nextQ(){showQ()}
+function showResults(){
+  document.getElementById(&amp;#x27;gameScreen&amp;#x27;).classList.add(&amp;#x27;hidden&amp;#x27;);
+  document.getElementById(&amp;#x27;resultScreen&amp;#x27;).classList.remove(&amp;#x27;hidden&amp;#x27;);
+  const pct=Math.round(st.correct/st.questions.length*100);
+  const stars=pct&amp;gt;=90?&amp;#x27;⭐⭐⭐⭐⭐&amp;#x27;:pct&amp;gt;=70?&amp;#x27;⭐⭐⭐⭐&amp;#x27;:pct&amp;gt;=50?&amp;#x27;⭐⭐⭐&amp;#x27;:pct&amp;gt;=30?&amp;#x27;⭐⭐&amp;#x27;:&amp;#x27;⭐&amp;#x27;;
+  document.getElementById(&amp;#x27;starsDisplay&amp;#x27;).textContent=stars;
+  const title=pct&amp;gt;=90?&amp;#x27;🏆 Trạng Nguyên Nhí!&amp;#x27;:pct&amp;gt;=70?&amp;#x27;🎖️ Bảng Nhãn Nhí!&amp;#x27;:pct&amp;gt;=50?&amp;#x27;📜 Thám Hoa Nhí!&amp;#x27;:&amp;#x27;💪 Cố gắng thêm nhé!&amp;#x27;;
+  document.getElementById(&amp;#x27;resultTitle&amp;#x27;).textContent=title;
+  document.getElementById(&amp;#x27;resultDetail&amp;#x27;).innerHTML=&amp;#x27;Đúng: &amp;#x27;+st.correct+&amp;#x27;/&amp;#x27;+st.questions.length+&amp;#x27; câu&amp;lt;br&amp;gt;Điểm: &amp;#x27;+st.score+&amp;#x27;&amp;lt;br&amp;gt;Tỷ lệ: &amp;#x27;+pct+&amp;#x27;%&amp;#x27;;
+  sndWin();
+  const colors=[&amp;#x27;#f59e0b&amp;#x27;,&amp;#x27;#22c55e&amp;#x27;,&amp;#x27;#3b82f6&amp;#x27;,&amp;#x27;#8b5cf6&amp;#x27;,&amp;#x27;#ec4899&amp;#x27;,&amp;#x27;#ef4444&amp;#x27;];
+  for(let i=0;i&amp;lt;50;i++){const p=document.createElement(&amp;#x27;div&amp;#x27;);p.className=&amp;#x27;confetti-piece&amp;#x27;;p.style.left=Math.random()*100+&amp;#x27;vw&amp;#x27;;p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.setProperty(&amp;#x27;--fall-duration&amp;#x27;,(2+Math.random()*3)+&amp;#x27;s&amp;#x27;);p.style.setProperty(&amp;#x27;--rotation&amp;#x27;,(Math.random()*720-360)+&amp;#x27;deg&amp;#x27;);p.style.animationDelay=Math.random()*2+&amp;#x27;s&amp;#x27;;p.style.borderRadius=Math.random()&amp;gt;.5?&amp;#x27;50%&amp;#x27;:&amp;#x27;2px&amp;#x27;;p.style.width=(6+Math.random()*8)+&amp;#x27;px&amp;#x27;;p.style.height=(8+Math.random()*14)+&amp;#x27;px&amp;#x27;;document.body.appendChild(p);setTimeout(()=&amp;gt;p.remove(),5000)}
+}
+function resetAll(){document.getElementById(&amp;#x27;setupScreen&amp;#x27;).classList.remove(&amp;#x27;hidden&amp;#x27;);document.getElementById(&amp;#x27;gameScreen&amp;#x27;).classList.add(&amp;#x27;hidden&amp;#x27;);document.getElementById(&amp;#x27;resultScreen&amp;#x27;).classList.add(&amp;#x27;hidden&amp;#x27;)}
+&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/textarea&gt;
 
 &lt;div class=&quot;ov&quot; id=&quot;ov&quot;&gt;&lt;iframe id=&quot;gf&quot; sandbox=&quot;allow-scripts allow-same-origin&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
 &lt;button class=&quot;cb&quot; id=&quot;cb&quot; onclick=&quot;closeGame()&quot;&gt;✕&lt;/button&gt;
@@ -1116,11 +1569,24 @@ function resetAll(){document.getElementById(&amp;#x27;setupScreen&amp;#x27;).cla
     &lt;div class=&quot;gi g7&quot;&gt;⭐&lt;span&gt;Ngôi sao&lt;/span&gt;&lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&quot;cards&quot;&gt;
+
+    &lt;!-- ĐẤU TRƯỜNG TRI THỨC --&gt;
+    &lt;div class=&quot;card&quot; style=&quot;background:linear-gradient(145deg,#fef3c7,#fde68a,#fed7aa);border:2px solid #f59e0b;grid-column:1/-1&quot;&gt;
+      &lt;div style=&quot;display:flex;align-items:center;gap:14px;position:relative;z-index:1;flex-wrap:wrap;justify-content:center&quot;&gt;
+        &lt;div style=&quot;width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:2em;background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 15px rgba(245,158,11,.3)&quot;&gt;🏆&lt;/div&gt;
+        &lt;div style=&quot;flex:1;min-width:200px&quot;&gt;
+          &lt;div class=&quot;ct&quot; style=&quot;color:#92400e;font-size:1.2em&quot;&gt;⚔️ ĐẤU TRƯỜNG TRI THỨC&lt;/div&gt;
+          &lt;div class=&quot;cs-t&quot; style=&quot;color:#b45309&quot;&gt;Trạng nguyên nhí • 200 câu • Toán + Tiếng Việt + Tổng hợp • 4 cấp độ&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 15px rgba(245,158,11,.3);min-width:200px;margin:0&quot; onclick=&quot;openGame(7,&#x27;🏆 Đấu Trường Tri Thức&#x27;)&quot;&gt;⚔️ VÀO ĐẤU TRƯỜNG&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
     &lt;div class=&quot;card card-math&quot;&gt;
       &lt;div class=&quot;ch&quot;&gt;&lt;div class=&quot;ci&quot;&gt;🔢&lt;/div&gt;
         &lt;div&gt;&lt;div class=&quot;ct&quot;&gt;Trò chơi tương tác&lt;br&gt;Dạy Học TOÁN 1&lt;/div&gt;
         &lt;div class=&quot;cs-t&quot;&gt;Bộ sách Kết nối tri thức với cuộc sống&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;gc&quot;&gt;🎮 12 dạng toán • Phạm vi 20 + 100&lt;/div&gt;
+      &lt;div class=&quot;gc&quot;&gt;🎮 11 dạng toán • Phạm vi 20 + 100&lt;/div&gt;
       &lt;div class=&quot;cd&quot;&gt;Trò chơi thi đua tính toán theo tổ. GV chọn dạng toán (cộng, trừ, so sánh, đếm, tìm số thiếu...), chọn thời gian và số câu. Hỗ trợ 4 đội thi đua.&lt;/div&gt;
       &lt;div class=&quot;dt&quot; onclick=&quot;toggleList(this)&quot;&gt;📋 Xem danh sách dạng toán &lt;span class=&quot;ta&quot;&gt;▼&lt;/span&gt;&lt;/div&gt;
       &lt;div class=&quot;dl&quot; id=&quot;mL&quot;&gt;&lt;/div&gt;
@@ -1151,22 +1617,28 @@ function resetAll(){document.getElementById(&amp;#x27;setupScreen&amp;#x27;).cla
       &lt;div class=&quot;ch&quot;&gt;&lt;div class=&quot;ci&quot; style=&quot;background:linear-gradient(135deg,#10b981,#059669)&quot;&gt;🌿&lt;/div&gt;
         &lt;div&gt;&lt;div class=&quot;ct&quot; style=&quot;color:#065f46&quot;&gt;Tự nhiên &amp;amp; Xã hội&lt;br&gt;TNXH Lớp 1&lt;/div&gt;
         &lt;div class=&quot;cs-t&quot;&gt;📘 Kết nối tri thức với cuộc sống&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;gc&quot; style=&quot;background:rgba(5,150,105,.1);color:#065f46&quot;&gt;🌿 3 chủ đề • Thực vật, Sức khỏe, Trái Đất&lt;/div&gt;
-      &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 15px rgba(5,150,105,.25)&quot; onclick=&quot;openGame(4,&#x27;🌿 TNXH&#x27;)&quot;&gt;🚀 CHƠI NGAY&lt;/button&gt;
+      &lt;div class=&quot;gc&quot; style=&quot;background:rgba(5,150,105,.1);color:#065f46&quot;&gt;🌿 14 bài học • 3 chủ đề&lt;/div&gt;
+      &lt;div class=&quot;dt&quot; onclick=&quot;toggleList(this)&quot; style=&quot;border-color:rgba(16,185,129,.3)&quot;&gt;📋 Xem danh sách bài học &lt;span class=&quot;ta&quot;&gt;▼&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;dl&quot; id=&quot;tnL&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#10b981,#059669)&quot; onclick=&quot;openGame(4,&#x27;🌿 TNXH&#x27;)&quot;&gt;🚀 CHƠI NGAY&lt;/button&gt;
     &lt;/div&gt;
     &lt;div class=&quot;card&quot; style=&quot;background:linear-gradient(145deg,#fef3c7,#fde68a,#fed7aa);border:2px solid #f59e0b&quot;&gt;
       &lt;div class=&quot;ch&quot;&gt;&lt;div class=&quot;ci&quot; style=&quot;background:linear-gradient(135deg,#f59e0b,#d97706)&quot;&gt;🌈&lt;/div&gt;
         &lt;div&gt;&lt;div class=&quot;ct&quot; style=&quot;color:#92400e&quot;&gt;Tiếng Việt – Cánh Diều&lt;br&gt;TV Lớp 1&lt;/div&gt;
         &lt;div class=&quot;cs-t&quot;&gt;📕 Bộ sách Cánh Diều&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;gc&quot; style=&quot;background:rgba(217,119,6,.1);color:#92400e&quot;&gt;🌈 8 chủ điểm • Gia đình, Trường học, Thiên nhiên&lt;/div&gt;
-      &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 15px rgba(217,119,6,.25)&quot; onclick=&quot;openGame(5,&#x27;🌈 TV Cánh Diều&#x27;)&quot;&gt;🚀 CHƠI NGAY&lt;/button&gt;
+      &lt;div class=&quot;gc&quot; style=&quot;background:rgba(217,119,6,.1);color:#92400e&quot;&gt;🌈 25 bài • 8 chủ điểm&lt;/div&gt;
+      &lt;div class=&quot;dt&quot; onclick=&quot;toggleList(this)&quot; style=&quot;border-color:rgba(245,158,11,.3)&quot;&gt;📋 Xem danh sách bài học &lt;span class=&quot;ta&quot;&gt;▼&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;dl&quot; id=&quot;cdL&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#f59e0b,#d97706)&quot; onclick=&quot;openGame(5,&#x27;🌈 TV Cánh Diều&#x27;)&quot;&gt;🚀 CHƠI NGAY&lt;/button&gt;
     &lt;/div&gt;
     &lt;div class=&quot;card&quot; style=&quot;background:linear-gradient(145deg,#ede9fe,#ddd6fe,#c4b5fd);border:2px solid #8b5cf6&quot;&gt;
       &lt;div class=&quot;ch&quot;&gt;&lt;div class=&quot;ci&quot; style=&quot;background:linear-gradient(135deg,#8b5cf6,#7c3aed)&quot;&gt;🇬🇧&lt;/div&gt;
         &lt;div&gt;&lt;div class=&quot;ct&quot; style=&quot;color:#5b21b6&quot;&gt;English – Grade 1&lt;br&gt;Tiếng Anh Lớp 1&lt;/div&gt;
         &lt;div class=&quot;cs-t&quot;&gt;Alphabet, Vocabulary, Greetings&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
-      &lt;div class=&quot;gc&quot; style=&quot;background:rgba(124,58,237,.1);color:#5b21b6&quot;&gt;🇬🇧 3 topics • Phonics, Colors, Classroom&lt;/div&gt;
-      &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#8b5cf6,#7c3aed);box-shadow:0 4px 15px rgba(124,58,237,.25)&quot; onclick=&quot;openGame(6,&#x27;🇬🇧 English&#x27;)&quot;&gt;🚀 PLAY NOW&lt;/button&gt;
+      &lt;div class=&quot;gc&quot; style=&quot;background:rgba(124,58,237,.1);color:#5b21b6&quot;&gt;🇬🇧 10 topics • 39 questions&lt;/div&gt;
+      &lt;div class=&quot;dt&quot; onclick=&quot;toggleList(this)&quot; style=&quot;border-color:rgba(139,92,246,.3)&quot;&gt;📋 View topic list &lt;span class=&quot;ta&quot;&gt;▼&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;dl&quot; id=&quot;enL&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;pb&quot; style=&quot;background:linear-gradient(135deg,#8b5cf6,#7c3aed)&quot; onclick=&quot;openGame(6,&#x27;🇬🇧 English&#x27;)&quot;&gt;🚀 PLAY NOW&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -1181,6 +1653,12 @@ var mathGames=[{e:&quot;➕&quot;,n:&quot;Phép cộng (trong 20)&quot;,t:&quot;
 var vietGames=[{e:&quot;🐱&quot;,n:&quot;Ghép hình–chữ (con vật)&quot;,t:&quot;Nối emoji với tên&quot;,b:&quot;e&quot;},{e:&quot;🍎&quot;,n:&quot;Ghép hình–chữ (đồ vật)&quot;,t:&quot;Nối emoji với tên&quot;,b:&quot;e&quot;},{e:&quot;🔤&quot;,n:&quot;Ghép âm vần&quot;,t:&quot;an–ang, ăn–ăng…&quot;,b:&quot;m&quot;},{e:&quot;✏️&quot;,n:&quot;Ghép từ đúng vần&quot;,t:&quot;Điền chữ cái thiếu&quot;,b:&quot;m&quot;},{e:&quot;⚖️&quot;,n:&quot;Ghép từ trái nghĩa&quot;,t:&quot;to–nhỏ, cao–thấp…&quot;,b:&quot;e&quot;}];
 var raceGames=[{e:&quot;🔢&quot;,n:&quot;Bộ Toán Lớp 1&quot;,t:&quot;25 câu trắc nghiệm&quot;,b:&quot;e&quot;},{e:&quot;📖&quot;,n:&quot;Bộ Tiếng Việt Lớp 1&quot;,t:&quot;25 câu trắc nghiệm&quot;,b:&quot;e&quot;},{e:&quot;🎲&quot;,n:&quot;Bộ Hỗn hợp&quot;,t:&quot;50 câu Toán + TV&quot;,b:&quot;m&quot;},{e:&quot;🏆&quot;,n:&quot;Em yêu Toán 1&quot;,t:&quot;25 câu nâng cao&quot;,b:&quot;h&quot;},{e:&quot;🏆&quot;,n:&quot;Em yêu Tiếng Việt 1&quot;,t:&quot;25 câu nâng cao&quot;,b:&quot;h&quot;}];
 function buildList(cid,items,gid){var c=document.getElementById(cid);var h=&#x27;&#x27;;for(var i=0;i&lt;items.length;i++){var it=items[i];var badge=it.b===&#x27;e&#x27;?&#x27;be&#x27;:it.b===&#x27;h&#x27;?&#x27;bh&#x27;:&#x27;bm&#x27;;var label=it.b===&#x27;e&#x27;?&#x27;Dễ&#x27;:it.b===&#x27;h&#x27;?&#x27;Khó&#x27;:&#x27;TB&#x27;;h+=&#x27;&lt;div class=&quot;item&quot; onclick=&quot;openGame(&#x27;+gid+&#x27;,\&#x27;&#x27;+it.e+&#x27; &#x27;+it.n.replace(/&#x27;/g,&quot;\\&#x27;&quot;)+&#x27;\&#x27;)&quot;&gt;&lt;div class=&quot;in&quot;&gt;&#x27;+(i+1)+&#x27;&lt;/div&gt;&lt;div class=&quot;ie&quot;&gt;&#x27;+it.e+&#x27;&lt;/div&gt;&lt;div class=&quot;ii&quot;&gt;&lt;div class=&quot;iname&quot;&gt;&#x27;+it.n+&#x27;&lt;/div&gt;&lt;div class=&quot;itopic&quot;&gt;&#x27;+it.t+&#x27;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ib &#x27;+badge+&#x27;&quot;&gt;&#x27;+label+&#x27;&lt;/div&gt;&lt;div class=&quot;pa&quot;&gt;▶ Chơi&lt;/div&gt;&lt;/div&gt;&#x27;;if(i&lt;items.length-1)h+=&#x27;&lt;div class=&quot;sep&quot;&gt;&lt;/div&gt;&#x27;}c.innerHTML=h}
+var tnxhGames=[{e:&quot;🌱&quot;,n:&quot;Cây xung quanh em&quot;,t:&quot;Bài 15&quot;,b:&quot;e&quot;},{e:&quot;🌿&quot;,n:&quot;Chăm sóc và bảo vệ cây trồng&quot;,t:&quot;Bài 16&quot;,b:&quot;m&quot;},{e:&quot;🐶&quot;,n:&quot;Con vật quanh em&quot;,t:&quot;Bài 17&quot;,b:&quot;e&quot;},{e:&quot;🐄&quot;,n:&quot;Chăm sóc và bảo vệ vật nuôi&quot;,t:&quot;Bài 18&quot;,b:&quot;m&quot;},{e:&quot;📚&quot;,n:&quot;Ôn tập Thực vật và Động vật&quot;,t:&quot;Bài 19&quot;,b:&quot;e&quot;},{e:&quot;🧍&quot;,n:&quot;Cơ thể em&quot;,t:&quot;Bài 20&quot;,b:&quot;e&quot;},{e:&quot;👁️&quot;,n:&quot;Các giác quan của cơ thể&quot;,t:&quot;Bài 21&quot;,b:&quot;m&quot;},{e:&quot;🍎&quot;,n:&quot;Ăn, uống hằng ngày&quot;,t:&quot;Bài 22&quot;,b:&quot;e&quot;},{e:&quot;🏃&quot;,n:&quot;Vận động và nghỉ ngơi&quot;,t:&quot;Bài 23&quot;,b:&quot;e&quot;},{e:&quot;🛡️&quot;,n:&quot;Tự bảo vệ mình&quot;,t:&quot;Bài 24&quot;,b:&quot;h&quot;},{e:&quot;📚&quot;,n:&quot;Ôn tập Con người và Sức khỏe&quot;,t:&quot;Bài 25&quot;,b:&quot;e&quot;},{e:&quot;🌤️&quot;,n:&quot;Cùng khám phá bầu trời&quot;,t:&quot;Bài 26&quot;,b:&quot;m&quot;},{e:&quot;🌧️&quot;,n:&quot;Thời tiết luôn thay đổi&quot;,t:&quot;Bài 27&quot;,b:&quot;m&quot;},{e:&quot;📚&quot;,n:&quot;Ôn tập Trái Đất và Bầu trời&quot;,t:&quot;Bài 28&quot;,b:&quot;e&quot;}];
+var cdGames=[{e:&quot;🐭&quot;,n:&quot;Chuột con đáng yêu (Tập đọc)&quot;,t:&quot;CĐ 1 - Gia đình&quot;,b:&quot;e&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa A, Ă, Â&quot;,t:&quot;CĐ 1 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;💌&quot;,n:&quot;Bưu thiếp Lời yêu thương&quot;,t:&quot;CĐ 1 - Góc sáng tạo&quot;,b:&quot;m&quot;},{e:&quot;👨‍🏫&quot;,n:&quot;Thầy giáo (Tập đọc)&quot;,t:&quot;CĐ 2 - Trường học&quot;,b:&quot;e&quot;},{e:&quot;🐜&quot;,n:&quot;Kiến em đi học&quot;,t:&quot;CĐ 2 - Tập đọc&quot;,b:&quot;e&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa C&quot;,t:&quot;CĐ 2 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;🎁&quot;,n:&quot;Ba món quà (Kể chuyện)&quot;,t:&quot;CĐ 2 - Kể chuyện&quot;,b:&quot;m&quot;},{e:&quot;🦌&quot;,n:&quot;Son ca, nai và sách&quot;,t:&quot;CĐ 3 - Thiên nhiên&quot;,b:&quot;e&quot;},{e:&quot;🌻&quot;,n:&quot;Chuyện trong vườn&quot;,t:&quot;CĐ 3 - Tập đọc&quot;,b:&quot;e&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa E, Ê&quot;,t:&quot;CĐ 3 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;🌈&quot;,n:&quot;Em yêu thiên nhiên&quot;,t:&quot;CĐ 3 - Góc sáng tạo&quot;,b:&quot;m&quot;},{e:&quot;👧&quot;,n:&quot;Sẻ anh, sẻ em&quot;,t:&quot;CĐ 4 - Gia đình&quot;,b:&quot;e&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa Đ&quot;,t:&quot;CĐ 4 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;🍬&quot;,n:&quot;Cái kẹo và con cành cam&quot;,t:&quot;CĐ 5 - Trường học&quot;,b:&quot;m&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa M, N&quot;,t:&quot;CĐ 5 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;📓&quot;,n:&quot;Quyền vở của em&quot;,t:&quot;CĐ 5 - Tập đọc&quot;,b:&quot;e&quot;},{e:&quot;🏆&quot;,n:&quot;Cuộc thi không thành&quot;,t:&quot;CĐ 6 - Thiên nhiên&quot;,b:&quot;m&quot;},{e:&quot;🐟&quot;,n:&quot;Anh hùng biển cả&quot;,t:&quot;CĐ 6 - Tập đọc&quot;,b:&quot;e&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa P, Q&quot;,t:&quot;CĐ 6 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;🏠&quot;,n:&quot;Ngôi nhà ấm áp&quot;,t:&quot;CĐ 7 - Gia đình&quot;,b:&quot;e&quot;},{e:&quot;👩&quot;,n:&quot;Ba cô con gái (Kể chuyện)&quot;,t:&quot;CĐ 7 - Kể chuyện&quot;,b:&quot;m&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa U, Ư&quot;,t:&quot;CĐ 7 - Tập viết&quot;,b:&quot;e&quot;},{e:&quot;🚶&quot;,n:&quot;Ve con đi học&quot;,t:&quot;CĐ 8 - Trường học&quot;,b:&quot;e&quot;},{e:&quot;🏫&quot;,n:&quot;Chuyện ở lớp&quot;,t:&quot;CĐ 8 - Tập đọc&quot;,b:&quot;e&quot;},{e:&quot;✍️&quot;,n:&quot;Tô chữ hoa V, X&quot;,t:&quot;CĐ 8 - Tập viết&quot;,b:&quot;e&quot;}];
+var engGames=[{e:&quot;🔤&quot;,n:&quot;Alphabet (A-Z)&quot;,t:&quot;26 letters&quot;,b:&quot;e&quot;},{e:&quot;🔊&quot;,n:&quot;Phonics basics&quot;,t:&quot;Letter sounds&quot;,b:&quot;e&quot;},{e:&quot;🅰️&quot;,n:&quot;Vowels: A, E, I, O, U&quot;,t:&quot;5 vowels&quot;,b:&quot;e&quot;},{e:&quot;🐱&quot;,n:&quot;Animals vocabulary&quot;,t:&quot;cat, dog, fish...&quot;,b:&quot;e&quot;},{e:&quot;🎨&quot;,n:&quot;Colors vocabulary&quot;,t:&quot;red, blue, green...&quot;,b:&quot;e&quot;},{e:&quot;🔢&quot;,n:&quot;Numbers 1-10&quot;,t:&quot;one, two, three...&quot;,b:&quot;e&quot;},{e:&quot;👋&quot;,n:&quot;Greetings&quot;,t:&quot;Hello, Goodbye...&quot;,b:&quot;m&quot;},{e:&quot;📚&quot;,n:&quot;Classroom language&quot;,t:&quot;book, pen, ruler...&quot;,b:&quot;m&quot;},{e:&quot;🗣️&quot;,n:&quot;Simple conversations&quot;,t:&quot;What is your name?&quot;,b:&quot;m&quot;},{e:&quot;🍎&quot;,n:&quot;Fruits vocabulary&quot;,t:&quot;apple, banana...&quot;,b:&quot;e&quot;}];
+buildList(&#x27;tnL&#x27;,tnxhGames,4);
+buildList(&#x27;cdL&#x27;,cdGames,5);
+buildList(&#x27;enL&#x27;,engGames,6);
 buildList(&#x27;mL&#x27;,mathGames,1);buildList(&#x27;vL&#x27;,vietGames,2);buildList(&#x27;rL&#x27;,raceGames,3);
 function toggleList(btn){var list=btn.nextElementSibling;var wasOpen=btn.classList.contains(&#x27;open&#x27;);var allBtns=document.querySelectorAll(&#x27;.dt.open&#x27;);for(var i=0;i&lt;allBtns.length;i++){if(allBtns[i]!==btn){allBtns[i].classList.remove(&#x27;open&#x27;);allBtns[i].nextElementSibling.classList.remove(&#x27;open&#x27;)}}btn.classList.toggle(&#x27;open&#x27;);list.classList.toggle(&#x27;open&#x27;)}
 var cards=document.querySelectorAll(&#x27;.card&#x27;);for(var i=0;i&lt;cards.length;i++){(function(card){card.addEventListener(&#x27;mousemove&#x27;,function(e){var r=card.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5;var y=(e.clientY-r.top)/r.height-.5;card.style.transform=&#x27;perspective(700px) rotateY(&#x27;+(x*8)+&#x27;deg) rotateX(&#x27;+(-y*8)+&#x27;deg) translateY(-6px) scale(1.015)&#x27;});card.addEventListener(&#x27;mouseleave&#x27;,function(){card.style.transform=&#x27;&#x27;})})(cards[i])}
